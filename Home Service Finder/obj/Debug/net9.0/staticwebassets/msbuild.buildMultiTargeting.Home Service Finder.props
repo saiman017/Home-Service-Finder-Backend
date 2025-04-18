@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Home Service Finder.props" />
+</Project>

@@ -1,0 +1,9 @@
+# Ignore Visual Studio files
+.vs/
+
+# Ignore system-specific files
+Thumbs.db
+.DS_Store
+
+# Ignore node_modules if working with Node.js/React
+node_modules/
