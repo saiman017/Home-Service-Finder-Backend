@@ -9,6 +9,7 @@ using Home_Service_Finder.Locations;
 using Home_Service_Finder.ServicesList;
 using Home_Service_Finder.RequestServices.ServiceRequest;
 using Home_Service_Finder.Roles;
+using Home_Service_Finder.RequestServices.ServiceOffers;
 
 namespace Home_Service_Finder.Data
 {
@@ -28,6 +29,8 @@ namespace Home_Service_Finder.Data
         public DbSet<ServiceRequest> ServiceRequests { get; set; }
 
         public DbSet<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
+        public DbSet<ServiceOffer> ServiceOffers { get; set; }
+
 
 
 

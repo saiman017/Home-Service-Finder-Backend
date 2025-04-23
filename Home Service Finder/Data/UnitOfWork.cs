@@ -3,6 +3,9 @@ using Home_Service_Finder.Email;
 using Home_Service_Finder.Email.Contracts;
 using Home_Service_Finder.Locations;
 using Home_Service_Finder.Locations.Contracts;
+using Home_Service_Finder.RequestServices.ServiceOffers;
+using Home_Service_Finder.RequestServices.ServiceOffers;
+using Home_Service_Finder.RequestServices.ServiceOffers.Contracts;
 using Home_Service_Finder.RequestServices.ServiceRequest;
 using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
 using Home_Service_Finder.Roles;
@@ -46,6 +49,7 @@ namespace Home_Service_Finder.Data
 
         public IServiceListRepository ServiceLists { get; private set; }
 
+        public IServiceOfferRepository ServiceOffers { get; private set; }
 
         public UnitOfWork(AppDbContext dbContext)
         {
@@ -60,6 +64,9 @@ namespace Home_Service_Finder.Data
             ServiceLists = new ServiceListRepository(_dbContext);
             ServiceRequests = new ServiceRequestRepository(_dbContext);
             ServiceRequestServiceLists = new ServiceRequestServiceListRepsoitory(_dbContext);
+            ServiceOffers = new ServiceOfferRepository(_dbContext);
+
+
 
         }
         public Task BeginTransactionAsync()

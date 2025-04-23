@@ -10,6 +10,9 @@ namespace Home_Service_Finder.Users.Contracts
         Task<APIResponse> DeleteUser(Guid id);
         Task<APIResponse> AddUser(UserRequestDto userRequestDto);
         Task<APIResponse> UpdateUser(Guid id,UserUpdateRequestDto userUpdateRequestDto);
+        Task<APIResponse> UploadProfilePicture(Guid userId, IFormFile file);
+        Task<APIResponse> DeleteProfilePicture(Guid userId);
+
 
 
     }

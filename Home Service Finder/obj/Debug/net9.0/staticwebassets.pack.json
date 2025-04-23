@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Saiman\\source\\repos\\GenTech Internship\\Home Service Finder\\Home Service Finder\\wwwroot\\uploads\\d2ca396e-0896-4406-bbfd-39533bb2d75f_312c538c-bf80-46ac-a49d-9b3fb4877fa0.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\d2ca396e-0896-4406-bbfd-39533bb2d75f_312c538c-bf80-46ac-a49d-9b3fb4877fa0.jpeg"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Home Service Finder.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Home Service Finder.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.Home Service Finder.props",
+      "PackagePath": "build\\Home Service Finder.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.Home Service Finder.props",
+      "PackagePath": "buildMultiTargeting\\Home Service Finder.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.Home Service Finder.props",
+      "PackagePath": "buildTransitive\\Home Service Finder.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

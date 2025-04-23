@@ -78,6 +78,22 @@
     ]
   },
   {
+    "ContainingType": "Home_Service_Finder.Images.ImageController",
+    "Method": "UploadProfilePicture",
+    "RelativePath": "api/Image/profile-picture",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Home_Service_Finder.Locations.LocationController",
     "Method": "SaveLocationAsync",
     "RelativePath": "api/location",
@@ -626,6 +642,203 @@
     ]
   },
   {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "CreateServiceOffer",
+    "RelativePath": "api/serviceOffer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "serviceOfferRequestDto",
+        "Type": "Home_Service_Finder.RequestServices.ServiceOffers.Dtos.ServiceOfferRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "AcceptOffer",
+    "RelativePath": "api/serviceOffer/{offerId}/accept",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "customerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "RejectOffer",
+    "RelativePath": "api/serviceOffer/{offerId}/reject",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "customerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "UpdateOfferStatus",
+    "RelativePath": "api/serviceOffer/{offerId}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "statusUpdate",
+        "Type": "Home_Service_Finder.RequestServices.ServiceOffers.Dtos.StatusUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "GetOfferByIdAsync",
+    "RelativePath": "api/serviceOffer/offer/{offerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "GetOffersByProviderId",
+    "RelativePath": "api/serviceOffer/provider/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "GetOffersByRequestId",
+    "RelativePath": "api/serviceOffer/request/{requestId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Home_Service_Finder.Users.ServiceProvider.ServiceProviderController",
     "Method": "GetAllServiceProviderAsync",
     "RelativePath": "api/serviceProvider",
@@ -802,6 +1015,32 @@
   },
   {
     "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "GetPendingRequestsByCategory",
+    "RelativePath": "api/serviceRequest/{categoryId}/pending",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "categoryId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
     "Method": "GetServiceRequestById",
     "RelativePath": "api/serviceRequest/{id}",
     "HttpMethod": "GET",
@@ -811,6 +1050,58 @@
       {
         "Name": "id",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "CancelServiceRequest",
+    "RelativePath": "api/serviceRequest/{requestId}/cancel",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "customerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "UpdateServiceRequestStatus",
+    "RelativePath": "api/serviceRequest/{requestId}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
@@ -883,6 +1174,58 @@
     "Method": "DeleteRequestsByCustomerId",
     "RelativePath": "api/serviceRequest/customer/{customerId}",
     "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "GetActiveRequestsByCustomerId",
+    "RelativePath": "api/serviceRequest/customer/{customerId}/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "GetPendingRequestByCustomerId",
+    "RelativePath": "api/serviceRequest/customer/{customerId}/pending",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1019,6 +1362,63 @@
         "Name": "userUpdateRequestDto",
         "Type": "Home_Service_Finder.Users.Dtos.UserUpdateRequestDto",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.Users.UsersController",
+    "Method": "DeleteProfilePicture",
+    "RelativePath": "api/users/{id}/deleteProfilePicture",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.Users.UsersController",
+    "Method": "UploadProfilePicture",
+    "RelativePath": "api/users/{id}/uploadProfilePicture",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [

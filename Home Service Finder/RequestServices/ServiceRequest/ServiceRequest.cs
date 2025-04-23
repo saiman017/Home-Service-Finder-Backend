@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Home_Service_Finder.Locations;
 using Home_Service_Finder.Users.Users;
 using Home_Service_Finder.ServiceCategories;
+using Home_Service_Finder.RequestServices.ServiceOffers;
 
 namespace Home_Service_Finder.RequestServices.ServiceRequest
 {
@@ -38,7 +39,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         public string Status { get; set; } = "Pending"; // Pending, Accepted, Rejected, Expired
 
         public ICollection<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
-        public ICollection<ServiceOffer> ServiceOffers { get; set; }
+        public ICollection<ServiceOffer> Serviceoffers { get; set; }
 
         // Snapshot of location details at request time
         [Column("LocationAddress", TypeName = "TEXT")]
@@ -55,5 +56,8 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
         [Column("LocationLongitude", TypeName = "DOUBLE PRECISION")]
         public double LocationLongitude { get; set; }
+
+        public ICollection<ServiceRequestImage> Images { get; set; }
+
     }
 }

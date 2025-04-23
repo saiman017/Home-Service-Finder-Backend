@@ -1,4 +1,5 @@
-﻿using Home_Service_Finder.Data.Contracts;
+﻿using System.Linq.Expressions;
+using Home_Service_Finder.Data.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Home_Service_Finder.Data
@@ -52,6 +53,6 @@ namespace Home_Service_Finder.Data
             _dbSet.Entry(entity).State = EntityState.Modified;
             return entity;
 
-        }
+        } 
     }
 }

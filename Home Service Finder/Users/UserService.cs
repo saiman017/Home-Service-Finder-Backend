@@ -323,5 +323,60 @@ namespace Home_Service_Finder.Users
                 ? ResponseHandler.GetSuccessResponse(response, "User updated successfully")
                 : ResponseHandler.GetBadRequestResponse("Failed to update user");
         }
+
+        public async Task<APIResponse> UploadProfilePicture(Guid userId, IFormFile file)
+        {
+            var userDetail = await _db.UserDetails.GetByIdAsync(userId);
+            if (userDetail == null)
+                return ResponseHandler.GetNotFoundResponse("User not found");
+
+            // Save the image to wwwroot/uploads
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Replace old image if exists
+            if (!string.IsNullOrEmpty(userDetail.ProfilePicture))
+            {
+                var oldImagePath = Path.Combine(uploadsFolder, Path.GetFileName(userDetail.ProfilePicture));
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
+            }
+
+            // Update profile picture path
+            userDetail.ProfilePicture = $"/uploads/{fileName}";
+            _db.UserDetails.UpdateAsync(userDetail);
+            await _db.SaveChangesAsync();
+
+            return ResponseHandler.GetSuccessResponse(userDetail.ProfilePicture, "Profile picture uploaded successfully");
+        }
+
+        public async Task<APIResponse> DeleteProfilePicture(Guid userId)
+        {
+            var userDetail = await _db.UserDetails.GetByIdAsync(userId);
+            if (userDetail == null || string.IsNullOrEmpty(userDetail.ProfilePicture))
+                return ResponseHandler.GetNotFoundResponse("Profile picture not found");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+            var imagePath = Path.Combine(uploadsFolder, Path.GetFileName(userDetail.ProfilePicture));
+
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
+            userDetail.ProfilePicture = null;
+            _db.UserDetails.UpdateAsync(userDetail);
+            await _db.SaveChangesAsync();
+
+            return ResponseHandler.GetSuccessResponse(null, "Profile picture deleted successfully");
+        }
+
     }
 }

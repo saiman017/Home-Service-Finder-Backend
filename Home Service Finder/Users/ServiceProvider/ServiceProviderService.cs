@@ -6,6 +6,7 @@ using Home_Service_Finder.Users.ServiceProvider.Dtos;
 using Home_Service_Finder.Users.UserDetails;
 using Home_Service_Finder.Users.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Home_Service_Finder.Users.ServiceProvider
 {
@@ -121,6 +122,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
                 ModifiedAt = user.ModifiedAt,
                 Experience = serviceProvider.Experience,
                 PersonalDescription = serviceProvider.PersonalDescription,
+                ServiceCategoryId = serviceProvider.ServiceCategoryId,
                 ServiceCategory = serviceCategoryName,
                 IsEmailVerified = user.IsEmailVerified,
                 IsAdminVerified = serviceProvider.IsAdminVerified,
@@ -186,6 +188,8 @@ namespace Home_Service_Finder.Users.ServiceProvider
                     ModifiedAt = user.ModifiedAt,
                     Experience = sp.Experience,
                     PersonalDescription = sp.PersonalDescription,
+                    ServiceCategoryId = sp.ServiceCategoryId,
+
                     ServiceCategory = serviceCategory?.Name,
                     IsActive = sp.IsActive
                 });
@@ -229,6 +233,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
                 ModifiedAt = user.ModifiedAt,
                 Experience = serviceProvider.Experience,
                 PersonalDescription = serviceProvider.PersonalDescription,
+                ServiceCategoryId = serviceProvider.ServiceCategoryId,
                 ServiceCategory = serviceCategory?.Name,
                 //IsDocumentVerified = serviceProvider.IsDocumentVerified,
                 IsActive = serviceProvider.IsActive
@@ -338,6 +343,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
                 ModifiedAt = user.ModifiedAt,
                 Experience = serviceProvider.Experience,
                 PersonalDescription = serviceProvider.PersonalDescription,
+                ServiceCategoryId = serviceProvider.ServiceCategoryId,
                 ServiceCategory = serviceCategory.Name,
                 //IsDocumentVerified = serviceProvider.IsDocumentVerified,
                 IsEmailVerified = user.IsEmailVerified,

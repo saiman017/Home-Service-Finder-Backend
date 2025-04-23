@@ -121,20 +121,16 @@ namespace Home_Service_Finder.Migrations
                     b.ToTable("Location", "Locations");
                 });
 
-            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceOffer", b =>
+            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceOffers.ServiceOffer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
 
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("BOOLEAN")
-                        .HasColumnName("IsAccepted");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("VARCHAR(500)")
-                        .HasColumnName("Message");
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("TIMESTAMPTZ")
+                        .HasColumnName("ExpiresAt");
 
                     b.Property<decimal>("OfferedPrice")
                         .HasColumnType("DECIMAL")
@@ -149,6 +145,11 @@ namespace Home_Service_Finder.Migrations
 
                     b.Property<Guid>("ServiceRequestId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(20)")
+                        .HasColumnName("Status");
 
                     b.HasKey("Id");
 
@@ -485,7 +486,7 @@ namespace Home_Service_Finder.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceOffer", b =>
+            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceOffers.ServiceOffer", b =>
                 {
                     b.HasOne("Home_Service_Finder.Users.ServiceProvider.ServiceProvider", "ServiceProvider")
                         .WithMany()
@@ -494,7 +495,7 @@ namespace Home_Service_Finder.Migrations
                         .IsRequired();
 
                     b.HasOne("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", "ServiceRequest")
-                        .WithMany("ServiceOffers")
+                        .WithMany("Serviceoffers")
                         .HasForeignKey("ServiceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -604,9 +605,9 @@ namespace Home_Service_Finder.Migrations
 
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", b =>
                 {
-                    b.Navigation("ServiceOffers");
-
                     b.Navigation("ServiceRequestServiceLists");
+
+                    b.Navigation("Serviceoffers");
                 });
 
             modelBuilder.Entity("Home_Service_Finder.ServiceCategories.ServiceCategory", b =>

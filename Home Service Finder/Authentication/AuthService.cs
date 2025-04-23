@@ -128,13 +128,19 @@ namespace Home_Service_Finder.Authentication
             await _dbContext.RefreshTokens.AddAsync(userRefreshToken);
             await _dbContext.SaveChangesAsync();
 
-            LoginResponseDto loginResponseDto = new LoginResponseDto()
+
+            RefreshTokenResponseDto refreshTokenResponseDto = new RefreshTokenResponseDto()
             {
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken
             };
+            var responseData = new
+            {
+                data = refreshTokenResponseDto,
+                message = "Token refreshed successfully"
+            };
 
-            return ResponseHandler.GetSuccessResponse(loginResponseDto, "Token refreshed successfully");
+            return ResponseHandler.GetSuccessResponse(EncodingHandler.EncodeToBase64(responseData), "Token refreshed successfully");
         }
 
     }

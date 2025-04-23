@@ -56,6 +56,21 @@ namespace Home_Service_Finder.Users
             var apiResponse = await _userService.UpdateUser(id, userUpdateRequestDto);
             return apiResponse;
         }
+
+        [HttpPost("{id}/uploadProfilePicture")]
+        public async Task<APIResponse> UploadProfilePicture(Guid id, IFormFile file)
+        {
+            var apiResponse = await _userService.UploadProfilePicture(id, file);
+            return apiResponse;
+        }
+
+        [HttpDelete("{id}/deleteProfilePicture")]
+        public async Task<APIResponse> DeleteProfilePicture(Guid id)
+        {
+            var apiResponse = await _userService.DeleteProfilePicture(id);
+            return apiResponse;
+        }
+
     }
 
 

@@ -1,6 +1,9 @@
 ﻿using Home_Service_Finder.Data.Contracts;
+using Home_Service_Finder.RequestServices.ServiceOffers;
+using Home_Service_Finder.RequestServices.ServiceOffers.Dtos;
 using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
 using Home_Service_Finder.RequestServices.ServiceRequest.Dtos;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +14,96 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
     public class ServiceRequestService : IServiceRequestService
     {
         private readonly IUnitOfWork _dbContext;
-        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(5);
+        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(20);
+        private readonly IHubContext<ServiceRequestHub> _hubContext;
 
-        public ServiceRequestService(IUnitOfWork unitOfWork)
+        public ServiceRequestService(IUnitOfWork unitOfWork, IHubContext<ServiceRequestHub> hubContext)
         {
             _dbContext = unitOfWork;
+            _hubContext = hubContext;
         }
+
+        //public async Task<APIResponse> CreateServiceRequestAsync(ServiceRequestRequestDto serviceRequestRequestDto)
+        //{
+        //    try
+        //    {
+        //        // Validate customer exists
+        //        var customer = await _dbContext.Users.GetByIdAsync(serviceRequestRequestDto.CustomerId);
+        //        if (customer == null)
+        //            return ResponseHandler.GetBadRequestResponse("Customer not found.");
+
+        //        // Check for existing active requests
+        //        var activeRequests = (await _dbContext.ServiceRequests.GetAllAsync())
+        //            .Where(sr => sr.CustomerId == serviceRequestRequestDto.CustomerId &&
+        //                       (sr.Status == "Pending" || sr.Status == "Accepted"))
+        //            .ToList();
+
+        //        if (activeRequests.Any())
+        //            return ResponseHandler.GetBadRequestResponse("You already have an active service request.");
+
+        //        // Validate location
+        //        var location = await _dbContext.Locations.GetByIdAsync(serviceRequestRequestDto.LocationId);
+        //        if (location == null)
+        //            return ResponseHandler.GetBadRequestResponse("Location not found.");
+
+        //        // Validate category
+        //        var category = await _dbContext.ServiceCategories.GetByIdAsync(serviceRequestRequestDto.ServiceCategoryId);
+        //        if (category == null)
+        //            return ResponseHandler.GetBadRequestResponse("Service category not found.");
+
+        //        // Validate service lists if provided
+        //        if (serviceRequestRequestDto.ServiceListIds?.Any() == true)
+        //        {
+        //            foreach (var serviceListId in serviceRequestRequestDto.ServiceListIds)
+        //            {
+        //                if (await _dbContext.ServiceLists.GetByIdAsync(serviceListId) == null)
+        //                    return ResponseHandler.GetBadRequestResponse($"Service list with ID {serviceListId} not found.");
+        //            }
+        //        }
+
+        //        // Create new request
+        //        var serviceRequest = new ServiceRequest
+        //        {
+        //            Id = Guid.NewGuid(),
+        //            CustomerId = serviceRequestRequestDto.CustomerId,
+        //            LocationId = serviceRequestRequestDto.LocationId,
+        //            ServiceCategoryId = serviceRequestRequestDto.ServiceCategoryId,
+        //            Description = serviceRequestRequestDto.Description,
+        //            CreatedAt = DateTime.UtcNow,
+        //            ExpiresAt = DateTime.UtcNow.Add(_requestExpiration),
+        //            Status = "Pending",
+        //            LocationAddress = serviceRequestRequestDto.Address ?? location.Address,
+        //            LocationCity = serviceRequestRequestDto.City ?? location.City,
+        //            LocationPostalCode = serviceRequestRequestDto.PostalCode ?? location.PostalCode,
+        //            LocationLatitude = serviceRequestRequestDto.Latitude ?? location.Latitude,
+        //            LocationLongitude = serviceRequestRequestDto.Longitude ?? location.Longitude
+        //        };
+
+        //        await _dbContext.ServiceRequests.AddAsync(serviceRequest);
+
+        //        // Add service list mappings
+        //        if (serviceRequestRequestDto.ServiceListIds?.Any() == true)
+        //        {
+        //            foreach (var serviceListId in serviceRequestRequestDto.ServiceListIds)
+        //            {
+        //                await _dbContext.ServiceRequestServiceLists.AddAsync(new ServiceRequestServiceList
+        //                {
+        //                    Id = Guid.NewGuid(),
+        //                    RequestId = serviceRequest.Id,
+        //                    ServiceListId = serviceListId
+        //                });
+        //            }
+        //        }
+
+        //        await _dbContext.SaveChangesAsync();
+        //        return ResponseHandler.GetSuccessResponse(serviceRequest.Id, "Service request created successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ResponseHandler.GetBadRequestResponse("Failed to create service request: " + ex.Message);
+        //    }
+        //}
+
 
         public async Task<APIResponse> CreateServiceRequestAsync(ServiceRequestRequestDto serviceRequestRequestDto)
         {
@@ -91,6 +178,11 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 }
 
                 await _dbContext.SaveChangesAsync();
+
+                // Send notification to providers subscribed to this category
+                var responseDto = await MapToResponseDto(serviceRequest);
+                await _hubContext.Clients.Group($"Category_{serviceRequest.ServiceCategoryId}").SendAsync("NewRequestCreated", responseDto);
+
                 return ResponseHandler.GetSuccessResponse(serviceRequest.Id, "Service request created successfully");
             }
             catch (Exception ex)
@@ -101,40 +193,42 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
         public async Task<APIResponse> UpdateServiceRequestStatusAsync(Guid requestId, string status)
         {
-            try
-            {
                 var serviceRequest = await _dbContext.ServiceRequests.GetByIdAsync(requestId);
                 if (serviceRequest == null)
                     return ResponseHandler.GetNotFoundResponse("Service request not found.");
 
-                // Validate status
-                var allowedStatuses = new[] { "Pending", "Accepted", "Rejected", "Cancelled", "Completed", "Expired" };
+                var allowedStatuses = new[] { "Pending", "In_Progress", "Accepted", "Rejected", "Cancelled", "Completed", "Expired" };
                 if (!allowedStatuses.Contains(status))
                     return ResponseHandler.GetBadRequestResponse($"Invalid status. Allowed values: {string.Join(", ", allowedStatuses)}");
 
-                // Check for invalid state transitions
-                if ((serviceRequest.Status == "Cancelled" && status != "Cancelled") ||
-                    (serviceRequest.Status == "Completed" && status != "Completed") ||
-                    (serviceRequest.Status == "Expired" && status != "Expired"))
+                // If status is already the same, don't update — just return success
+                if (serviceRequest.Status == status)
+                {
+                    var dtoAlready = await MapToResponseDto(serviceRequest);
+                    return ResponseHandler.GetSuccessResponse(dtoAlready, $"Service request is already {status}.");
+                }
+
+                // Prevent changing from terminal statuses to others
+                var terminalStatuses = new[] { "Cancelled", "Completed", "Expired" };
+                if (terminalStatuses.Contains(serviceRequest.Status) && serviceRequest.Status != status)
                 {
                     return ResponseHandler.GetBadRequestResponse($"Cannot change status from {serviceRequest.Status} to {status}.");
                 }
 
-                // Update status
                 serviceRequest.Status = status;
 
-                // If cancelling, update expiration
                 if (status == "Cancelled")
                     serviceRequest.ExpiresAt = DateTime.UtcNow;
 
                 await _dbContext.SaveChangesAsync();
-                return ResponseHandler.GetSuccessResponse(null, $"Service request status updated to {status} successfully.");
-            }
-            catch (Exception ex)
-            {
-                return ResponseHandler.GetBadRequestResponse("Failed to update service request status: " + ex.Message);
-            }
+
+                var dto = await MapToResponseDto(serviceRequest);
+                return ResponseHandler.GetSuccessResponse(dto, $"Service request status updated to {status} successfully.");
+            
         }
+
+
+
 
         public async Task<APIResponse> CancelServiceRequestAsync(Guid requestId, Guid customerId)
         {
@@ -168,42 +262,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             }
         }
 
-        //public async Task<APIResponse> AcceptServiceRequestAsync(Guid requestId, Guid providerId)
-        //{
-        //    try
-        //    {
-        //        var serviceRequest = await _dbContext.ServiceRequests.GetByIdAsync(requestId);
-        //        if (serviceRequest == null)
-        //            return ResponseHandler.GetNotFoundResponse("Service request not found.");
-
-        //        var provider = await _dbContext.Users.GetByIdAsync(providerId);
-        //        if (provider == null)
-        //            return ResponseHandler.GetBadRequestResponse("Service provider not found.");
-
-        //        if (serviceRequest.Status != "Pending")
-        //            return ResponseHandler.GetBadRequestResponse($"Cannot accept a service request with status '{serviceRequest.Status}'.");
-
-        //        serviceRequest.Status = "Accepted";
-
-        //        var serviceOffer = new ServiceOffer
-        //        {
-        //            Id = Guid.NewGuid(),
-        //            RequestId = requestId,
-        //            ProviderId = providerId,
-        //            Status = "Accepted",
-        //            CreatedAt = DateTime.UtcNow
-        //        };
-
-        //        await _dbContext.ServiceOffers.AddAsync(serviceOffer);
-        //        await _dbContext.SaveChangesAsync();
-
-        //        return ResponseHandler.GetSuccessResponse(null, "Service request accepted successfully.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ResponseHandler.GetBadRequestResponse("Failed to accept service request: " + ex.Message);
-        //    }
-        //}
+      
 
         public async Task<APIResponse> GetAllServiceRequestAsync()
         {
@@ -253,7 +312,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                     return ResponseHandler.GetNotFoundResponse("Customer not found.");
 
                 var requests = (await _dbContext.ServiceRequests.GetAllAsync())
-                    .Where(sr => sr.CustomerId == customerId)
+                    .Where(sr => sr.CustomerId == customerId )
                     .ToList();
 
                 if (!requests.Any())
@@ -287,7 +346,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                     .ToList();
 
                 if (!activeRequests.Any())
-                    return ResponseHandler.GetNotFoundResponse("No active service requests found for this customer.");
+                    return null;
 
                 var dtos = new List<ServiceRequestResponseDto>();
                 foreach (var request in activeRequests)
@@ -300,6 +359,64 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             catch (Exception ex)
             {
                 return ResponseHandler.GetBadRequestResponse("Failed to retrieve active service requests: " + ex.Message);
+            }
+        }
+
+        public async Task<APIResponse> GetPendingRequestByCustomerId(Guid customerId)
+        {
+            try
+            {
+                var customer = await _dbContext.Users.GetByIdAsync(customerId);
+                if (customer == null)
+                    return ResponseHandler.GetNotFoundResponse("Customer not found.");
+
+                var pendingRequest = (await _dbContext.ServiceRequests.GetAllAsync())
+                    .FirstOrDefault(sr => sr.CustomerId == customerId && sr.Status == "Pending");
+
+                if (pendingRequest == null)
+                    return ResponseHandler.GetSuccessResponse(null, "No pending service request.");
+
+                var dto = await MapToResponseDto(pendingRequest);
+
+                return ResponseHandler.GetSuccessResponse(dto, "Pending service request retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHandler.GetBadRequestResponse("Failed to retrieve pending service request: " + ex.Message);
+            }
+        }
+
+
+
+
+
+        public async Task<APIResponse> GetPendingRequestByCategory(Guid categoryId)
+        {
+            try
+            {
+                var customer = await _dbContext.ServiceCategories.GetByIdAsync(categoryId);
+                if (customer == null)
+                    return ResponseHandler.GetNotFoundResponse("Pending request  not found.");
+
+                var activeRequests = (await _dbContext.ServiceRequests.GetAllAsync())
+                    .Where(sr => sr.ServiceCategoryId == categoryId &&
+                               (sr.Status == "Pending" ))
+                    .ToList();
+
+                if (!activeRequests.Any())
+                    return ResponseHandler.GetNoContentResponse("Not conent");
+
+                var dtos = new List<ServiceRequestResponseDto>();
+                foreach (var request in activeRequests)
+                {
+                    dtos.Add(await MapToResponseDto(request));
+                }
+
+                return ResponseHandler.GetSuccessResponse(dtos, "Pending service requests retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ResponseHandler.GetBadRequestResponse("Failed to retrieve pending service requests: " + ex.Message);
             }
         }
 
@@ -331,6 +448,8 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 return ResponseHandler.GetBadRequestResponse("Failed to retrieve category service requests: " + ex.Message);
             }
         }
+
+
 
         public async Task<APIResponse> DeleteRequestByCustomerId(Guid customerId)
         {
@@ -413,5 +532,8 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 LocationLongitude = request.LocationLongitude
             };
         }
+
+
+        
     }
 }
