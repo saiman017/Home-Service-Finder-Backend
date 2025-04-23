@@ -1,12 +1,20 @@
 {
   "Version": 1,
-  "Hash": "pZX2N1RKJEXhbFTlcgwe3Ba6q0kUwYwK7KI9T4KqU4Q=",
+  "Hash": "07v6EjOablH33S12MeGoxcSutGCPGaOrh1WDHZie+LY=",
   "Source": "Home Service Finder",
   "BasePath": "_content/Home Service Finder",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Home Service Finder\\wwwroot",
+      "Source": "Home Service Finder",
+      "ContentRoot": "C:\\Users\\Saiman\\source\\repos\\GenTech Internship\\Home Service Finder\\Home Service Finder\\wwwroot\\",
+      "BasePath": "_content/Home Service Finder",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [],
   "Endpoints": []
 }

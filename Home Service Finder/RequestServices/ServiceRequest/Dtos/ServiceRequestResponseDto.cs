@@ -26,5 +26,6 @@
         public string LocationPostalCode { get; set; }
         public double LocationLatitude { get; set; }
         public double LocationLongitude { get; set; }
+
     }
 }

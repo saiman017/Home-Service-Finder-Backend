@@ -15,6 +15,13 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest.Contracts
         Task<APIResponse> GetRequestByServiceCategory(Guid categoryId);
 
         Task<APIResponse> DeleteRequestByCustomerId(Guid customerId);
+        Task<APIResponse> UpdateServiceRequestStatusAsync(Guid requestId, string status);
+        Task<APIResponse> CancelServiceRequestAsync(Guid requestId, Guid customerId);
+
+        Task<APIResponse> GetActiveRequestByCustomerId(Guid customerId);
+        Task<APIResponse> GetPendingRequestByCategory(Guid categoryId);
+
+        Task<APIResponse> GetPendingRequestByCustomerId(Guid customerId);
 
 
 

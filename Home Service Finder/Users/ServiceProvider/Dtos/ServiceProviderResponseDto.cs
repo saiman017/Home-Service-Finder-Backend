@@ -19,6 +19,9 @@
         public bool IsAdminVerified { get; set; }
         public bool IsEmailVerified { get; set; }
 
+        public Guid ServiceCategoryId { get; set; }
+
+
         public string ServiceCategory { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

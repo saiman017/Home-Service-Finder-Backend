@@ -5,5 +5,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest.Contracts
 {
     public interface IServiceRequestRepositpry : IGenericRepository<ServiceRequest>
     {
+
     }
 }

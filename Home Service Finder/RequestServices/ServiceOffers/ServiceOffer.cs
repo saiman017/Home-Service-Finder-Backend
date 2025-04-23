@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Home_Service_Finder.Users.ServiceProvider;
 
-namespace Home_Service_Finder.RequestServices.ServiceRequest
+namespace Home_Service_Finder.RequestServices.ServiceOffers
 {
     [Table("ServiceOffer", Schema = "Requests")]
     public class ServiceOffer
@@ -13,7 +13,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
         [ForeignKey("ServiceRequest")]
         public Guid ServiceRequestId { get; set; }
-        public ServiceRequest ServiceRequest { get; set; }
+        public ServiceRequest.ServiceRequest ServiceRequest { get; set; }
 
         [ForeignKey("ServiceProvider")]
         public Guid ServiceProviderId { get; set; }
@@ -22,13 +22,16 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         [Column("OfferedPrice", TypeName = "DECIMAL")]
         public decimal OfferedPrice { get; set; }
 
-        [Column("Message", TypeName = "VARCHAR(500)")]
-        public string? Message { get; set; }
-
         [Column("SentAt", TypeName = "TIMESTAMPTZ")]
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
 
-        [Column("IsAccepted", TypeName = "BOOLEAN")]
-        public bool IsAccepted { get; set; } = false;
+        [Column("ExpiresAt", TypeName = "TIMESTAMPTZ")]
+        public DateTime ExpiresAt { get; set; }
+        [Column("Status", TypeName = "VARCHAR(20)")]
+        public string Status { get; set; } = "Pending";
     }
+
+
+  
+    
 }
