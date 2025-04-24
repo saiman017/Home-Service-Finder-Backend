@@ -228,6 +228,28 @@ namespace Home_Service_Finder.Migrations
                     b.ToTable("ServiceRequest", "Requests");
                 });
 
+            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ImagePath");
+
+                    b.Property<Guid>("ServiceRequestId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.ToTable("ServiceRequestImage", "Requests");
+                });
+
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestServiceList", b =>
                 {
                     b.Property<Guid>("Id")
@@ -532,6 +554,17 @@ namespace Home_Service_Finder.Migrations
                     b.Navigation("ServiceCategory");
                 });
 
+            modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestImage", b =>
+                {
+                    b.HasOne("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", "ServiceRequest")
+                        .WithMany("Images")
+                        .HasForeignKey("ServiceRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceRequest");
+                });
+
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestServiceList", b =>
                 {
                     b.HasOne("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", "ServiceRequest")
@@ -605,6 +638,8 @@ namespace Home_Service_Finder.Migrations
 
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("ServiceRequestServiceLists");
 
                     b.Navigation("Serviceoffers");

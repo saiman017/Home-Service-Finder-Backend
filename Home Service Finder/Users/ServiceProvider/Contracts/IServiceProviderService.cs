@@ -9,8 +9,9 @@ namespace Home_Service_Finder.Users.ServiceProvider.Contracts
         Task<APIResponse> GetServiceProviderById(Guid id);
         Task<APIResponse> DeleteServiceProviderAsync(Guid id);
         Task<APIResponse> UpdateServiceProvider(Guid id, ServiceProviderUpdateRequestDto serviceProviderUpdateRequestDto);
+        Task<APIResponse> GetServiceProviderStatisticsAsync(Guid providerId);
 
-        
+
 
         // findbyServiceId listof service service provider
 

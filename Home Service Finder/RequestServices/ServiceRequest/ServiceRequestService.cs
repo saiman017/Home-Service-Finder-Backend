@@ -1,4 +1,5 @@
-﻿using Home_Service_Finder.Data.Contracts;
+﻿using Home_Service_Finder.Data;
+using Home_Service_Finder.Data.Contracts;
 using Home_Service_Finder.RequestServices.ServiceOffers;
 using Home_Service_Finder.RequestServices.ServiceOffers.Dtos;
 using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
@@ -14,13 +15,14 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
     public class ServiceRequestService : IServiceRequestService
     {
         private readonly IUnitOfWork _dbContext;
-        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(20);
+        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(10);
         private readonly IHubContext<ServiceRequestHub> _hubContext;
 
         public ServiceRequestService(IUnitOfWork unitOfWork, IHubContext<ServiceRequestHub> hubContext)
         {
             _dbContext = unitOfWork;
             _hubContext = hubContext;
+           
         }
 
         //public async Task<APIResponse> CreateServiceRequestAsync(ServiceRequestRequestDto serviceRequestRequestDto)
@@ -489,6 +491,51 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             }
         }
 
+        public async Task<APIResponse> UploadServiceRequestImagesAsync(Guid requestId, List<IFormFile> files)
+        {
+            var serviceRequest = await _dbContext.ServiceRequests.GetByIdAsync(requestId);
+            if (serviceRequest == null)
+                return ResponseHandler.GetNotFoundResponse("Service request not found.");
+
+            if (files == null || !files.Any())
+                return ResponseHandler.GetBadRequestResponse("No images uploaded.");
+
+            if (files.Count > 6)
+                return ResponseHandler.GetBadRequestResponse("Maximum 6 images allowed.");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/serviceRequestImages");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var savedImagePaths = new List<string>();
+
+            foreach (var file in files)
+            {
+                var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                var imagePath = $"/serviceRequestImages/{fileName}";
+                savedImagePaths.Add(imagePath);
+
+                await _dbContext.ServiceRequestImages.AddAsync(new ServiceRequestImage
+                {
+                    ServiceRequestId = requestId,
+                    ImagePath = imagePath
+                });
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return ResponseHandler.GetSuccessResponse(savedImagePaths, "Images uploaded successfully.");
+        }
+
+
+
         private async Task<ServiceRequestResponseDto> MapToResponseDto(ServiceRequest request)
         {
             var customerDetails = await _dbContext.UserDetails.GetByIdAsync(request.CustomerId);
@@ -500,7 +547,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
             var serviceListIds = new List<Guid>();
             var serviceListNames = new List<string>();
-
             foreach (var mapping in mappings)
             {
                 var serviceList = await _dbContext.ServiceLists.GetByIdAsync(mapping.ServiceListId);
@@ -510,6 +556,12 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                     serviceListNames.Add(serviceList.Name);
                 }
             }
+
+            // Fetch images
+            var images = (await _dbContext.ServiceRequestImages.GetAllAsync())
+                .Where(img => img.ServiceRequestId == request.Id)
+                .Select(img => img.ImagePath)
+                .ToList();
 
             return new ServiceRequestResponseDto
             {
@@ -529,11 +581,12 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 LocationCity = request.LocationCity,
                 LocationPostalCode = request.LocationPostalCode,
                 LocationLatitude = request.LocationLatitude,
-                LocationLongitude = request.LocationLongitude
+                LocationLongitude = request.LocationLongitude,
+                ServiceRequestImagePaths = images
             };
         }
 
 
-        
+
     }
 }

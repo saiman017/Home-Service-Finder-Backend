@@ -968,6 +968,32 @@
     ]
   },
   {
+    "ContainingType": "Home_Service_Finder.Users.ServiceProvider.ServiceProviderController",
+    "Method": "GetServiceProviderStatisticsAsync",
+    "RelativePath": "api/serviceProvider/statistics/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
     "Method": "CreateServiceRequest",
     "RelativePath": "api/serviceRequest",
@@ -1103,6 +1129,37 @@
         "Name": "status",
         "Type": "System.String",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "UploadImages",
+    "RelativePath": "api/serviceRequest/{requestId}/uploadImages",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [

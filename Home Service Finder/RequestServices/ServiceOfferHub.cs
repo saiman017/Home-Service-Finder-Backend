@@ -71,6 +71,29 @@ namespace Home_Service_Finder.RequestServices
                 .SendAsync("OfferExpired", offer);
         }
 
+        public async Task NotifyProviderReached(Guid requestId, Guid customerId)
+        {
+            await Clients.Group($"Customer_{customerId}")
+                .SendAsync("ProviderReached", new
+                {
+                    RequestId = requestId,
+                    Status = "In_Progress",
+                    Message = "The service provider has reached your location."
+                });
+        }
+
+        public async Task NotifyProviderCompleted(Guid requestId, Guid customerId)
+        {
+            await Clients.Group($"Customer_{customerId}")
+                .SendAsync("ProviderCompleted", new
+                {
+                    RequestId = requestId,
+                    Status = "Completed",
+                    Message = "The service provider has completed the service."
+                });
+        }
+
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
@@ -80,6 +103,8 @@ namespace Home_Service_Finder.RequestServices
         {
             await base.OnDisconnectedAsync(exception);
         }
+
+
 
 
     }

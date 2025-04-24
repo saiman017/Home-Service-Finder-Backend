@@ -26,6 +26,7 @@
         public string LocationPostalCode { get; set; }
         public double LocationLatitude { get; set; }
         public double LocationLongitude { get; set; }
+        public List<string> ServiceRequestImagePaths { get; set; } = new List<string>();
 
     }
 }
