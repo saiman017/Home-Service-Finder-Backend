@@ -51,6 +51,8 @@ namespace Home_Service_Finder.Data
 
         public IServiceOfferRepository ServiceOffers { get; private set; }
 
+        public IServiceRequestImageRepository ServiceRequestImages { get; private set; }
+
         public UnitOfWork(AppDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -65,6 +67,7 @@ namespace Home_Service_Finder.Data
             ServiceRequests = new ServiceRequestRepository(_dbContext);
             ServiceRequestServiceLists = new ServiceRequestServiceListRepsoitory(_dbContext);
             ServiceOffers = new ServiceOfferRepository(_dbContext);
+            ServiceRequestImages = new ServiceRequestImageRepository(_dbContext);
 
 
 

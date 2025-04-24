@@ -262,6 +262,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Home_Service_Finder.Data;
 
 namespace Home_Service_Finder.RequestServices.ServiceOffers
 {
@@ -609,24 +610,29 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
             // Return the success response with the mapped DTO
             return ResponseHandler.GetSuccessResponse(offerDto, "Service offer retrieved successfully.");
         }
-
         public async Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status)
         {
-            var offer = await _dbContext.ServiceOffers.GetByIdAsync(offerId);
+            // Use the repository method to eager load ServiceRequest
+            var offer = await _dbContext.ServiceOffers.GetOfferWithRequestAsync(offerId); // Use repository here
+
             if (offer == null)
                 return ResponseHandler.GetNotFoundResponse("Service offer not found.");
+
+            if (offer.ServiceRequest == null)
+                return ResponseHandler.GetNotFoundResponse("Associated service request not found.");
 
             // Validate status
             if (!new[] { "Pending", "In_Progress", "Completed", "Cancelled" }.Contains(status))
                 return ResponseHandler.GetBadRequestResponse("Invalid status value.");
 
+            // Update status
             offer.Status = status;
-            await _dbContext.SaveChangesAsync();
+            _dbContext.ServiceOffers.UpdateAsync(offer); // Repository method (make sure it's async-safe)
+            await _dbContext.SaveChangesAsync(); // Save changes via UnitOfWork
 
             // Get provider details for notification
             var providerDetails = await _dbContext.UserDetails.GetByIdAsync(offer.ServiceProviderId);
 
-            // Create response DTO for real-time notification
             var offerDto = new ServiceOfferResponseDto
             {
                 Id = offer.Id,
@@ -639,14 +645,38 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
                 Status = offer.Status
             };
 
-            // Notify about status update
+            // Notify Provider group
             await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
                 .SendAsync("YourOfferStatusUpdated", offerDto);
 
+            // Notify Customer group about offer status
             await _hubContext.Clients.Group($"RequestOffers_{offer.ServiceRequestId}")
                 .SendAsync("OfferStatusUpdated", offerDto);
 
+            // Send additional message if status is specific
+            string? customerMessage = status switch
+            {
+                "In_Progress" => "The provider has reached your location and started the work.",
+                "Completed" => "The provider has completed the work.",
+                _ => null
+            };
+
+            if (!string.IsNullOrEmpty(customerMessage))
+            {
+                await _hubContext.Clients.Group($"Customer_{offer.ServiceRequest.CustomerId}")
+                    .SendAsync("YourRequestStatusUpdated", new
+                    {
+                        RequestId = offer.ServiceRequestId,
+                        Status = status,
+                        Message = customerMessage
+                    });
+            }
+
             return ResponseHandler.GetSuccessResponse(null, $"Service offer status updated to {status} successfully.");
         }
+
+
+
+
     }
 }

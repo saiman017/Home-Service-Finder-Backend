@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Home Service Finder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4e0bd9e2f5971293e824c57332b90beab512099")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe7d2e9b59c9647b1b5604024cc0b9c22bb426b7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Home Service Finder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Home Service Finder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

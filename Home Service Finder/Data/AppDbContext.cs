@@ -30,6 +30,8 @@ namespace Home_Service_Finder.Data
 
         public DbSet<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
         public DbSet<ServiceOffer> ServiceOffers { get; set; }
+        public DbSet<ServiceRequestImage> ServiceRequestImages { get; set; }
+
 
 
 

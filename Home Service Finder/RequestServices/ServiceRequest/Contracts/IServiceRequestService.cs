@@ -22,6 +22,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest.Contracts
         Task<APIResponse> GetPendingRequestByCategory(Guid categoryId);
 
         Task<APIResponse> GetPendingRequestByCustomerId(Guid customerId);
+        Task<APIResponse> UploadServiceRequestImagesAsync(Guid requestId, List<IFormFile> files);
 
 
 

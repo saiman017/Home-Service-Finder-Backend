@@ -10,7 +10,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
     {
         private readonly IServiceProvider _services;
         private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(1);
-        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(20);
+        private readonly TimeSpan _requestExpiration = TimeSpan.FromMinutes(10);
 
         public ServiceRequestExpirationService(IServiceProvider services)
         {

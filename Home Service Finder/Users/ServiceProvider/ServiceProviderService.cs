@@ -353,5 +353,64 @@ namespace Home_Service_Finder.Users.ServiceProvider
 
             return ResponseHandler.GetSuccessResponse(response, "Service provider updated successfully");
         }
+
+        public async Task<APIResponse> GetServiceProviderStatisticsAsync(Guid providerId)
+        {
+            var serviceProvider = await _db.ServiceProviders.GetByIdAsync(providerId);
+            if (serviceProvider == null)
+                return ResponseHandler.GetNotFoundResponse("Service provider not found.");
+
+            // Convert to Nepal time (UTC+5:45)
+            var nepalTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Nepal Standard Time");
+            var currentUtcTime = DateTime.UtcNow;
+            var nepalTimeNow = TimeZoneInfo.ConvertTimeFromUtc(currentUtcTime, nepalTimeZone);
+
+            var todayNepal = nepalTimeNow.Date;
+            var startOfWeekNepal = todayNepal.AddDays(-(int)todayNepal.DayOfWeek); // Sunday as start of week
+
+            var offers = (await _db.ServiceOffers.GetAllAsync())
+                .Where(so => so.ServiceProviderId == providerId && so.Status == "Completed")
+                .ToList();
+
+            var totalEarnings = offers.Sum(o => o.OfferedPrice);
+            var totalCompletedOffers = offers.Count;
+
+            var todayEarnings = offers
+                .Where(o =>
+                {
+                    var offerNepalTime = TimeZoneInfo.ConvertTimeFromUtc(o.SentAt, nepalTimeZone);
+                    return offerNepalTime.Date == todayNepal;
+                })
+                .Sum(o => o.OfferedPrice);
+
+            var weekEarnings = offers
+                .Where(o =>
+                {
+                    var offerNepalTime = TimeZoneInfo.ConvertTimeFromUtc(o.SentAt, nepalTimeZone);
+                    return offerNepalTime.Date >= startOfWeekNepal;
+                })
+                .Sum(o => o.OfferedPrice);
+
+            var todayCompletedOffers = offers
+                .Where(o =>
+                {
+                    var offerNepalTime = TimeZoneInfo.ConvertTimeFromUtc(o.SentAt, nepalTimeZone);
+                    return offerNepalTime.Date == todayNepal;
+                })
+                .Count();
+
+            var statistics = new
+            {
+                TotalEarnings = totalEarnings,
+                TotalCompletedOffers = totalCompletedOffers,
+                TotalRevenueToday = todayEarnings,
+                TotalRevenueThisWeek = weekEarnings,
+                TotalOffersCompletedToday = todayCompletedOffers
+            };
+
+            return ResponseHandler.GetSuccessResponse(statistics, "Service provider statistics retrieved successfully.");
+        }
+
+
     }
 }

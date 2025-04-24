@@ -1,4 +1,5 @@
-﻿using Home_Service_Finder.Users.Contracts;
+﻿using System.Threading.Tasks;
+using Home_Service_Finder.Users.Contracts;
 using Home_Service_Finder.Users.Dtos;
 using Home_Service_Finder.Users.ServiceProvider.Contracts;
 using Home_Service_Finder.Users.ServiceProvider.Dtos;
@@ -54,6 +55,14 @@ namespace Home_Service_Finder.Users.ServiceProvider
         {
             var apiResponse = await _serviceProviderService.UpdateServiceProvider(id, requestDto);
             return apiResponse;
+        }
+
+        [HttpGet("statistics/{providerId}")]
+        public async Task<APIResponse> GetServiceProviderStatisticsAsync(Guid providerId)
+        {
+            var apiResponse = await _serviceProviderService.GetServiceProviderStatisticsAsync(providerId);
+            return apiResponse;
+
         }
     }
 }

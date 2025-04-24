@@ -309,5 +309,13 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             var apiResponse = await _serviceRequestService.DeleteRequestByCustomerId(customerId);
             return apiResponse;
         }
+
+        [HttpPost("{requestId}/uploadImages")]
+        public async Task<APIResponse> UploadImages(Guid requestId, List<IFormFile> files)
+        {
+            var response = await _serviceRequestService.UploadServiceRequestImagesAsync(requestId, files);
+            return response;
+        }
+
     }
 }
