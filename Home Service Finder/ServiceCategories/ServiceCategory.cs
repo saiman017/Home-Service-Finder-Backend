@@ -18,7 +18,7 @@ namespace Home_Service_Finder.ServiceCategories
         public string? Description { get; set; }
 
         [Column("CategoryImage", TypeName = "VARCHAR(500)")]
-        public string CategoryImage { get; set; }
+        public string? CategoryImage { get; set; }
 
         [Column("CreatedAt", TypeName = "TIMESTAMPTZ")]
         public DateTime CreatedAt { get; set; }

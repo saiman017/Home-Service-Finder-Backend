@@ -3,5 +3,7 @@
     public class StatusUpdateDto
     {
         public string Status { get; set; }
+        public Guid RequestId { get; set; }
+        public Guid CustomerId { get; set; }
     }
 }

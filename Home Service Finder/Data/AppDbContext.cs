@@ -10,6 +10,8 @@ using Home_Service_Finder.ServicesList;
 using Home_Service_Finder.RequestServices.ServiceRequest;
 using Home_Service_Finder.Roles;
 using Home_Service_Finder.RequestServices.ServiceOffers;
+using Home_Service_Finder.Extensions;
+using Home_Service_Finder.Ratings;
 
 namespace Home_Service_Finder.Data
 {
@@ -31,6 +33,8 @@ namespace Home_Service_Finder.Data
         public DbSet<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
         public DbSet<ServiceOffer> ServiceOffers { get; set; }
         public DbSet<ServiceRequestImage> ServiceRequestImages { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+
 
 
 
@@ -39,8 +43,10 @@ namespace Home_Service_Finder.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.AddPostgreSqlDateTruncSupport();
 
-           
+
+
         }
     }
 }

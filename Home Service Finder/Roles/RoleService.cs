@@ -61,17 +61,19 @@ namespace Home_Service_Finder.Roles
         public async Task<APIResponse> GetAllRoleAsync()
         {
             var roles = await _dbContext.Roles.GetAllAsync();
-            List<RoleResponseDto> response = new List<RoleResponseDto>();
-            foreach (var role in roles)
+
+            // Filter out deleted roles
+            var activeRoles = roles.Where(r => !r.IsDeleted).ToList();
+
+            List<RoleResponseDto> response = activeRoles.Select(role => new RoleResponseDto
             {
-                response.Add(new RoleResponseDto
-                {
-                    Id = role.Id,
-                    Name = role.Name
-                });
-            }
+                Id = role.Id,
+                Name = role.Name
+            }).ToList();
+
             return ResponseHandler.GetSuccessResponse(response);
         }
+
 
 
         public async Task<APIResponse> GetRoleByIDAsync(Guid id)

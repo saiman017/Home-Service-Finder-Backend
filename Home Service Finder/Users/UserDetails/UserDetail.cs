@@ -17,9 +17,6 @@ namespace Home_Service_Finder.Users.UserDetails
         [Required]
         public string FirstName { get; set; }
 
-        //[Column("MiddleName", TypeName = "VARCHAR(50)")]
-        //public string? MiddleName { get; set; }
-
         [Column("LastName", TypeName = "VARCHAR(50)")]
         [Required]
         public string LastName { get; set; }
@@ -33,7 +30,6 @@ namespace Home_Service_Finder.Users.UserDetails
 
         [Column("ProfilePicture", TypeName = "VARCHAR(500)")]
         public string? ProfilePicture { get; set; }
-
 
     }
 }

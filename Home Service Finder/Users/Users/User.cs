@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Home_Service_Finder.Locations;
 using Home_Service_Finder.Roles;
+using Home_Service_Finder.Users.UserDetails;
 
 namespace Home_Service_Finder.Users.Users
 {
@@ -48,6 +49,8 @@ namespace Home_Service_Finder.Users.Users
         public virtual Role Role { get; set; }
 
         public Location Location { get; set; }
+
+        public virtual UserDetail UserDetail { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Home_Service_Finder.Email.Contracts;
 using Home_Service_Finder.Locations.Contracts;
+using Home_Service_Finder.Ratings.Contracts;
 using Home_Service_Finder.RequestServices.ServiceOffers.Contracts;
 using Home_Service_Finder.RequestServices.ServiceRequest;
 using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
@@ -32,6 +33,8 @@ namespace Home_Service_Finder.Data.Contracts
 
         IServiceOfferRepository ServiceOffers{ get; }
         IServiceRequestImageRepository ServiceRequestImages { get; }
+        IRatingRepository Ratings { get; }
+
 
         IEmailOTPRepository Emails { get; }
         

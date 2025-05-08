@@ -29,6 +29,12 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
         public DateTime ExpiresAt { get; set; }
         [Column("Status", TypeName = "VARCHAR(20)")]
         public string Status { get; set; } = "Pending";
+
+        [Column("PaymentStatus", TypeName = "BOOLEAN")]
+        public bool PaymentStatus { get; set; } = false;
+
+        [Column("PaymentReason", TypeName = "TEXT")]     // or VARCHAR(max) if you prefer
+        public string? PaymentReason { get; set; } = null;
     }
 
 

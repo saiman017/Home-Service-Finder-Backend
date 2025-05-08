@@ -38,6 +38,9 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         [Column("Status", TypeName = "VARCHAR(20)")]
         public string Status { get; set; } = "Pending"; // Pending, Accepted, Rejected, Expired
 
+        [Column("CancelReason", TypeName = "TEXT")]
+        public string? CancelReason { get; set; }
+
         public ICollection<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
         public ICollection<ServiceOffer> Serviceoffers { get; set; }
 

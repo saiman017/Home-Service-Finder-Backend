@@ -10,6 +10,7 @@ namespace Home_Service_Finder.Users.ServiceProvider.Contracts
         Task<APIResponse> DeleteServiceProviderAsync(Guid id);
         Task<APIResponse> UpdateServiceProvider(Guid id, ServiceProviderUpdateRequestDto serviceProviderUpdateRequestDto);
         Task<APIResponse> GetServiceProviderStatisticsAsync(Guid providerId);
+        Task<APIResponse> GetRevenueTimeSeriesAsync(Guid providerId, string groupBy = "month");
 
 
 

@@ -1,4 +1,6 @@
-﻿namespace Home_Service_Finder.RequestServices.ServiceOffers.Dtos
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Home_Service_Finder.RequestServices.ServiceOffers.Dtos
 {
     public class ServiceOfferResponseDto
     {
@@ -10,6 +12,8 @@
         public DateTime SentAt { get; set; }
         public DateTime ExpiresAt { get; set; }
         public string Status { get; set; } // "Pending", "Accepted", "Rejected", "Expired"
+        public bool PaymentStatus { get; set; } = false;
+        public string? PaymentReason { get; set; }
     }
 
     

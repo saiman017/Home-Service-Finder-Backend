@@ -3,6 +3,8 @@ using Home_Service_Finder.Email;
 using Home_Service_Finder.Email.Contracts;
 using Home_Service_Finder.Locations;
 using Home_Service_Finder.Locations.Contracts;
+using Home_Service_Finder.Ratings;
+using Home_Service_Finder.Ratings.Contracts;
 using Home_Service_Finder.RequestServices.ServiceOffers;
 using Home_Service_Finder.RequestServices.ServiceOffers;
 using Home_Service_Finder.RequestServices.ServiceOffers.Contracts;
@@ -53,6 +55,9 @@ namespace Home_Service_Finder.Data
 
         public IServiceRequestImageRepository ServiceRequestImages { get; private set; }
 
+        public IRatingRepository Ratings { get; private set; }
+
+
         public UnitOfWork(AppDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -68,6 +73,7 @@ namespace Home_Service_Finder.Data
             ServiceRequestServiceLists = new ServiceRequestServiceListRepsoitory(_dbContext);
             ServiceOffers = new ServiceOfferRepository(_dbContext);
             ServiceRequestImages = new ServiceRequestImageRepository(_dbContext);
+            Ratings = new RatingRepository(_dbContext);
 
 
 

@@ -26,6 +26,155 @@
     ]
   },
   {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetRequests",
+    "RelativePath": "api/admin/dashboard/requests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "groupBy",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Home_Service_Finder.AdminDashboard.TimeSeriesDto, Home Service Finder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetRevenue",
+    "RelativePath": "api/admin/dashboard/revenue",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "groupBy",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Home_Service_Finder.AdminDashboard.RevenueDto, Home Service Finder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetRevenueByProvider",
+    "RelativePath": "api/admin/dashboard/revenue/provider/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "groupBy",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Home_Service_Finder.AdminDashboard.RevenueDto, Home Service Finder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetStatusBreakdown",
+    "RelativePath": "api/admin/dashboard/status-breakdown",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Home_Service_Finder.AdminDashboard.StatusBreakdownDto, Home Service Finder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetSummary",
+    "RelativePath": "api/admin/dashboard/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.AdminDashboard.SummaryDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.AdminDashboard.AdminDashboardController",
+    "Method": "GetTopProviders",
+    "RelativePath": "api/admin/dashboard/top-providers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "take",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Home_Service_Finder.AdminDashboard.ProviderPerformanceDto, Home Service Finder, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Home_Service_Finder.Authentication.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
@@ -229,6 +378,84 @@
     ]
   },
   {
+    "ContainingType": "Home_Service_Finder.Ratings.RatingController",
+    "Method": "Add",
+    "RelativePath": "api/rating",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Home_Service_Finder.Ratings.Dtos.RatingRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.Ratings.RatingController",
+    "Method": "GetByProvider",
+    "RelativePath": "api/rating/provider/{providerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.Ratings.RatingController",
+    "Method": "GetStats",
+    "RelativePath": "api/rating/provider/{providerId}/stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Home_Service_Finder.Roles.RoleController",
     "Method": "AddRoleAsync",
     "RelativePath": "api/role",
@@ -386,9 +613,19 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "serviceCategoryRequestDto",
-        "Type": "Home_Service_Finder.ServiceCategories.Dtos.ServiceCategoryRequestDto",
-        "IsRequired": true
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategoryImageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -405,35 +642,9 @@
   },
   {
     "ContainingType": "Home_Service_Finder.ServiceCategories.ServiceCategoryController",
-    "Method": "GetServiceCategoyById",
+    "Method": "GetServiceCategoryById",
     "RelativePath": "api/serviceCategory/{id}",
     "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "Home_Service_Finder.APIResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Home_Service_Finder.ServiceCategories.ServiceCategoryController",
-    "Method": "DeleteServiceCategoryAsync",
-    "RelativePath": "api/serviceCategory/{id}",
-    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -469,8 +680,44 @@
         "IsRequired": true
       },
       {
-        "Name": "serviceCategoryRequestDto",
-        "Type": "Home_Service_Finder.ServiceCategories.Dtos.ServiceCategoryRequestDto",
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CategoryImageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.ServiceCategories.ServiceCategoryController",
+    "Method": "DeleteServiceCategoryAsync",
+    "RelativePath": "api/serviceCategory/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -683,6 +930,68 @@
       {
         "Name": "customerId",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "UpdatePaymentStatus",
+    "RelativePath": "api/serviceOffer/{offerId}/payment",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Home_Service_Finder.RequestServices.ServiceOffers.Dtos.PaymentUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceOffers.ServiceOfferController",
+    "Method": "UpdatePaymentReason",
+    "RelativePath": "api/serviceOffer/{offerId}/reason",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "offerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Home_Service_Finder.RequestServices.ServiceOffers.Dtos.PaymentReasonDto",
         "IsRequired": true
       }
     ],
@@ -969,6 +1278,37 @@
   },
   {
     "ContainingType": "Home_Service_Finder.Users.ServiceProvider.ServiceProviderController",
+    "Method": "GetRevenueTimeSeries",
+    "RelativePath": "api/serviceProvider/{providerId}/revenue",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "providerId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "groupBy",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Home_Service_Finder.Users.ServiceProvider.ServiceProviderController",
     "Method": "GetServiceProviderStatisticsAsync",
     "RelativePath": "api/serviceProvider/statistics/{providerId}",
     "HttpMethod": "GET",
@@ -1111,6 +1451,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",
+    "Method": "CancelAccepted",
+    "RelativePath": "api/serviceRequest/{requestId}/cancelAccepted",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Home_Service_Finder.RequestServices.ServiceRequest.Dtos.CancelRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Home_Service_Finder.APIResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequestController",

@@ -12,6 +12,12 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers.Contracts
 
         Task<APIResponse> GetOfferByIdAsync(Guid offerId);
 
-        Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status);
+        //Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status);
+        Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status, Guid requestId, Guid customerId);
+
+
+        Task<APIResponse> UpdatePaymentStatusAsync(Guid offerId, bool paymentStatus);
+
+        Task<APIResponse> UpdatePaymentReasonAsync(Guid offerId, string paymentReason);
     }
 }

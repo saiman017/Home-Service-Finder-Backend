@@ -411,6 +411,50 @@ namespace Home_Service_Finder.Users.ServiceProvider
             return ResponseHandler.GetSuccessResponse(statistics, "Service provider statistics retrieved successfully.");
         }
 
+        public async Task<APIResponse> GetRevenueTimeSeriesAsync(Guid providerId, string groupBy = "month")
+        {
+            // 1) Fetch only paid, completed offers for this provider
+            var offers = await _db.ServiceOffers.GetAllAsync();
+            var paid = offers
+                .Where(o => o.ServiceProviderId == providerId && o.PaymentStatus && o.Status == "Completed")
+                .ToList();
+
+            // 2) Group by the requested period
+            IEnumerable<ServiceProviderRevenueDto> series = groupBy.ToLower() switch
+            {
+                "day" => paid
+                    .GroupBy(o => o.SentAt.Date)
+                    .Select(g => new ServiceProviderRevenueDto(
+                        g.Key.ToString("yyyy-MM-dd"),
+                        g.Sum(o => o.OfferedPrice)
+                    )),
+                "week" => paid
+                    .GroupBy(o => new {
+                        Year = o.SentAt.Year,
+                        Week = (o.SentAt.DayOfYear - 1) / 7 + 1
+                    })
+                    .Select(g => new ServiceProviderRevenueDto(
+                        $"{g.Key.Year:0000}-W{g.Key.Week:00}",
+                        g.Sum(o => o.OfferedPrice)
+                    )),
+                _ => // "month"
+                    paid
+                    .GroupBy(o => new {
+                        Year = o.SentAt.Year,
+                        Month = o.SentAt.Month
+                    })
+                    .Select(g => new ServiceProviderRevenueDto(
+                        new DateTime(g.Key.Year, g.Key.Month, 1).ToString("yyyy-MM"),
+                        g.Sum(o => o.OfferedPrice)
+                    ))
+            };
+
+            // 3) Order and return
+            var ordered = series.OrderBy(s => s.Period).ToList();
+            return ResponseHandler.GetSuccessResponse(ordered);
+        }
+
 
     }
+    public record ServiceProviderRevenueDto(string Period, decimal Amount);
 }

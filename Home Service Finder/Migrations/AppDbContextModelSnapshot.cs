@@ -121,6 +121,42 @@ namespace Home_Service_Finder.Migrations
                     b.ToTable("Location", "Locations");
                 });
 
+            modelBuilder.Entity("Home_Service_Finder.Ratings.Rating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("VARCHAR(500)")
+                        .HasColumnName("Comments");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TIMESTAMPTZ")
+                        .HasColumnName("CreatedAt");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ServiceProviderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ServiceRequestId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ServiceRequestId");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int")
+                        .HasColumnName("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.ToTable("Rating", "Service");
+                });
+
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceOffers.ServiceOffer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -135,6 +171,14 @@ namespace Home_Service_Finder.Migrations
                     b.Property<decimal>("OfferedPrice")
                         .HasColumnType("DECIMAL")
                         .HasColumnName("OfferedPrice");
+
+                    b.Property<string>("PaymentReason")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("PaymentReason");
+
+                    b.Property<bool>("PaymentStatus")
+                        .HasColumnType("BOOLEAN")
+                        .HasColumnName("PaymentStatus");
 
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("TIMESTAMPTZ")
@@ -166,6 +210,10 @@ namespace Home_Service_Finder.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
+
+                    b.Property<string>("CancelReason")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CancelReason");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TIMESTAMPTZ")
@@ -301,7 +349,6 @@ namespace Home_Service_Finder.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("CategoryImage")
-                        .IsRequired()
                         .HasColumnType("VARCHAR(500)")
                         .HasColumnName("CategoryImage");
 
@@ -508,6 +555,15 @@ namespace Home_Service_Finder.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Home_Service_Finder.Ratings.Rating", b =>
+                {
+                    b.HasOne("Home_Service_Finder.RequestServices.ServiceRequest.ServiceRequest", "ServiceRequest")
+                        .WithMany()
+                        .HasForeignKey("ServiceRequestId");
+
+                    b.Navigation("ServiceRequest");
+                });
+
             modelBuilder.Entity("Home_Service_Finder.RequestServices.ServiceOffers.ServiceOffer", b =>
                 {
                     b.HasOne("Home_Service_Finder.Users.ServiceProvider.ServiceProvider", "ServiceProvider")
@@ -617,8 +673,8 @@ namespace Home_Service_Finder.Migrations
             modelBuilder.Entity("Home_Service_Finder.Users.UserDetails.UserDetail", b =>
                 {
                     b.HasOne("Home_Service_Finder.Users.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne("UserDetail")
+                        .HasForeignKey("Home_Service_Finder.Users.UserDetails.UserDetail", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -653,6 +709,9 @@ namespace Home_Service_Finder.Migrations
             modelBuilder.Entity("Home_Service_Finder.Users.Users.User", b =>
                 {
                     b.Navigation("Location")
+                        .IsRequired();
+
+                    b.Navigation("UserDetail")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
