@@ -17,6 +17,7 @@
         public DateTime ExpiresAt { get; set; }
 
         public string Status { get; set; }
+        public string? CancelReason { get; set; }
 
         public List<Guid> ServiceListIds { get; set; }
         public List<string> ServiceListNames { get; set; }

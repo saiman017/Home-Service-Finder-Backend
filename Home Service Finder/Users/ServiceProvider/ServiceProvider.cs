@@ -13,10 +13,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
         [Column("Id", TypeName = "uuid")]
         [ForeignKey("User")]
         public Guid Id { get; set; }
-        public virtual User User { get; set; } // the virtual property automatically navigate the user property 
-        //[Column("Licenses", TypeName = "VARCHAR(500)")]
-        //[Required]
-        //public string Licenses { get; set; } // later if nned change it to array to store more document for future
+        public virtual User User { get; set; } 
 
         [Column("Experience", TypeName ="INT")]
         public int Experience { get; set; }

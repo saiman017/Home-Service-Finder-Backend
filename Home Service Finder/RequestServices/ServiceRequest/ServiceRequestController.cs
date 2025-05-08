@@ -225,7 +225,11 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             }
 
             return apiResponse;
+
+
         }
+
+
 
         [HttpPut("{requestId}/cancel")]
         public async Task<IActionResult> CancelServiceRequest(Guid requestId, [FromBody] Guid customerId)
@@ -313,8 +317,19 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         [HttpPost("{requestId}/uploadImages")]
         public async Task<APIResponse> UploadImages(Guid requestId, List<IFormFile> files)
         {
-            var response = await _serviceRequestService.UploadServiceRequestImagesAsync(requestId, files);
-            return response;
+            var apiResponse = await _serviceRequestService.UploadServiceRequestImagesAsync(requestId, files);
+            return apiResponse;
+        }
+
+        [HttpPut("{requestId}/cancelAccepted")]
+        public async Task<APIResponse> CancelAccepted(
+       Guid requestId,
+       [FromBody] CancelRequestDto dto)
+        {
+           
+            var apiResponse = await _serviceRequestService.CancelAcceptedRequestAsync(requestId, dto);
+            
+            return apiResponse;
         }
 
     }

@@ -64,6 +64,12 @@ namespace Home_Service_Finder.Users.ServiceProvider
             return apiResponse;
 
         }
+
+        [HttpGet("{providerId:guid}/revenue")]
+        public async Task<APIResponse> GetRevenueTimeSeries(Guid providerId,[FromQuery] string groupBy = "month")
+        {
+            return await _serviceProviderService.GetRevenueTimeSeriesAsync(providerId, groupBy);
+        }
     }
 }
 

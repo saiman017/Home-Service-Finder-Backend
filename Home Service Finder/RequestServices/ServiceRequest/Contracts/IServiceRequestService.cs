@@ -24,6 +24,8 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest.Contracts
         Task<APIResponse> GetPendingRequestByCustomerId(Guid customerId);
         Task<APIResponse> UploadServiceRequestImagesAsync(Guid requestId, List<IFormFile> files);
 
+        Task<APIResponse> CancelAcceptedRequestAsync(Guid requestId, CancelRequestDto dto);
+
 
 
 

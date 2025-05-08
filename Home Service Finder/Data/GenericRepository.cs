@@ -53,6 +53,7 @@ namespace Home_Service_Finder.Data
             _dbSet.Entry(entity).State = EntityState.Modified;
             return entity;
 
-        } 
+        }
+        public IQueryable<T> Entities => _dbSet;
     }
 }

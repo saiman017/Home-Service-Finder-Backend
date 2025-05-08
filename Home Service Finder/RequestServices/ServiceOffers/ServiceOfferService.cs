@@ -610,29 +610,106 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
             // Return the success response with the mapped DTO
             return ResponseHandler.GetSuccessResponse(offerDto, "Service offer retrieved successfully.");
         }
-        public async Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status)
-        {
-            // Use the repository method to eager load ServiceRequest
-            var offer = await _dbContext.ServiceOffers.GetOfferWithRequestAsync(offerId); // Use repository here
+        //public async Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string status)
+        //{
+        //    // Use the repository method to eager load ServiceRequest
+        //    var offer = await _dbContext.ServiceOffers.GetOfferWithRequestAsync(offerId); // Use repository here
 
+        //    if (offer == null)
+        //        return ResponseHandler.GetNotFoundResponse("Service offer not found.");
+
+        //    if (offer.ServiceRequest == null)
+        //        return ResponseHandler.GetNotFoundResponse("Associated service request not found.");
+
+        //    // Validate status
+        //    if (!new[] { "Pending", "In_Progress", "Completed", "Cancelled" }.Contains(status))
+        //        return ResponseHandler.GetBadRequestResponse("Invalid status value.");
+
+        //    // Update status
+        //    offer.Status = status;
+        //    _dbContext.ServiceOffers.UpdateAsync(offer); // Repository method (make sure it's async-safe)
+        //    await _dbContext.SaveChangesAsync(); // Save changes via UnitOfWork
+
+        //    // Get provider details for notification
+        //    var providerDetails = await _dbContext.UserDetails.GetByIdAsync(offer.ServiceProviderId);
+
+        //    var offerDto = new ServiceOfferResponseDto
+        //    {
+        //        Id = offer.Id,
+        //        ServiceRequestId = offer.ServiceRequestId,
+        //        ServiceProviderId = offer.ServiceProviderId,
+        //        ProviderName = $"{providerDetails?.FirstName} {providerDetails?.LastName}",
+        //        OfferedPrice = offer.OfferedPrice,
+        //        SentAt = offer.SentAt,
+        //        ExpiresAt = offer.ExpiresAt,
+        //        Status = offer.Status
+        //    };
+
+        //    // Notify Provider group
+        //    await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
+        //        .SendAsync("YourOfferStatusUpdated", offerDto);
+
+        //    // Notify Customer group about offer status
+        //    await _hubContext.Clients.Group($"RequestOffers_{offer.ServiceRequestId}")
+        //        .SendAsync("OfferStatusUpdated", offerDto);
+
+        //    // Send additional message if status is specific
+        //    string? customerMessage = status switch
+        //    {
+        //        "In_Progress" => "The provider has reached your location and started the work.",
+        //        "Completed" => "The provider has completed the work.",
+        //        _ => null
+        //    };
+
+        //    if (!string.IsNullOrEmpty(customerMessage))
+        //    {
+        //        await _hubContext.Clients.Group($"Customer_{offer.ServiceRequest.CustomerId}")
+        //            .SendAsync("YourRequestStatusUpdated", new
+        //            {
+        //                RequestId = offer.ServiceRequestId,
+        //                Status = status,
+        //                Message = customerMessage
+        //            });
+        //    }
+
+        //    return ResponseHandler.GetSuccessResponse(null, $"Service offer status updated to {status} successfully.");
+        //}
+
+        public async Task<APIResponse> UpdateOfferStatusAsync(Guid offerId, string newStatus, Guid requestId, Guid customerId)
+        {
+            // 1. Fire ProviderReached/Completed instantly for customer alert
+            if (newStatus == "In_Progress")
+            {
+                await _hubContext.Clients.Group($"Customer_{customerId}")
+                    .SendAsync("ProviderReached", new
+                    {
+                        RequestId = requestId,
+                        Status = "In_Progress",
+                        Message = "The service provider has reached your location."
+                    });
+            }
+            else if (newStatus == "Completed")
+            {
+                await _hubContext.Clients.Group($"Customer_{customerId}")
+                    .SendAsync("ProviderCompleted", new
+                    {
+                        RequestId = requestId,
+                        Status = "Completed",
+                        Message = "The service provider has completed the service."
+                    });
+            }
+
+            // 2. Update DB (Repository)
+            var offer = await _dbContext.ServiceOffers.GetOfferWithRequestAsync(offerId);
             if (offer == null)
                 return ResponseHandler.GetNotFoundResponse("Service offer not found.");
 
-            if (offer.ServiceRequest == null)
-                return ResponseHandler.GetNotFoundResponse("Associated service request not found.");
+            offer.Status = newStatus;
+             _dbContext.ServiceOffers.UpdateAsync(offer);
+            await _dbContext.SaveChangesAsync();
 
-            // Validate status
-            if (!new[] { "Pending", "In_Progress", "Completed", "Cancelled" }.Contains(status))
-                return ResponseHandler.GetBadRequestResponse("Invalid status value.");
-
-            // Update status
-            offer.Status = status;
-            _dbContext.ServiceOffers.UpdateAsync(offer); // Repository method (make sure it's async-safe)
-            await _dbContext.SaveChangesAsync(); // Save changes via UnitOfWork
-
-            // Get provider details for notification
+            // 3. Prepare Offer DTO for Redux sync
             var providerDetails = await _dbContext.UserDetails.GetByIdAsync(offer.ServiceProviderId);
-
             var offerDto = new ServiceOfferResponseDto
             {
                 Id = offer.Id,
@@ -645,35 +722,99 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
                 Status = offer.Status
             };
 
-            // Notify Provider group
-            await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
-                .SendAsync("YourOfferStatusUpdated", offerDto);
-
-            // Notify Customer group about offer status
+            // 4. Fire OfferStatusUpdated (Redux sync for customer)
             await _hubContext.Clients.Group($"RequestOffers_{offer.ServiceRequestId}")
                 .SendAsync("OfferStatusUpdated", offerDto);
 
-            // Send additional message if status is specific
-            string? customerMessage = status switch
+            // 5. Fire YourOfferStatusUpdated (Redux sync for provider)
+            await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
+                .SendAsync("YourOfferStatusUpdated", offerDto);
+
+            return ResponseHandler.GetSuccessResponse(null, $"Service offer status updated to {newStatus} successfully.");
+        }
+
+
+
+        public async Task<APIResponse> UpdatePaymentStatusAsync(Guid offerId, bool paymentStatus)
+        {
+            // 1) Load the offer
+            var offer = await _dbContext.ServiceOffers.GetByIdAsync(offerId);
+            if (offer == null)
+                return ResponseHandler.GetNotFoundResponse("Service offer not found.");
+
+            // 2) Only allow payment once work is completed
+            if (offer.Status != "Completed")
+                return ResponseHandler.GetBadRequestResponse("Cannot update payment until the work status is 'Completed'.");
+
+            // 3) Update the flag
+            offer.PaymentStatus = paymentStatus;
+            _dbContext.ServiceOffers.UpdateAsync(offer);
+            await _dbContext.SaveChangesAsync();
+
+            // 4) Build DTO
+            var providerDetails = await _dbContext.UserDetails.GetByIdAsync(offer.ServiceProviderId);
+            var dto = new ServiceOfferResponseDto
             {
-                "In_Progress" => "The provider has reached your location and started the work.",
-                "Completed" => "The provider has completed the work.",
-                _ => null
+                Id = offer.Id,
+                ServiceRequestId = offer.ServiceRequestId,
+                ServiceProviderId = offer.ServiceProviderId,
+                ProviderName = $"{providerDetails?.FirstName} {providerDetails?.LastName}",
+                OfferedPrice = offer.OfferedPrice,
+                SentAt = offer.SentAt,
+                ExpiresAt = offer.ExpiresAt,
+                Status = offer.Status,
+                PaymentStatus = offer.PaymentStatus
             };
 
-            if (!string.IsNullOrEmpty(customerMessage))
-            {
-                await _hubContext.Clients.Group($"Customer_{offer.ServiceRequest.CustomerId}")
-                    .SendAsync("YourRequestStatusUpdated", new
-                    {
-                        RequestId = offer.ServiceRequestId,
-                        Status = status,
-                        Message = customerMessage
-                    });
-            }
+            // 5) Notify via SignalR
+            await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
+                                     .SendAsync("YourOfferPaymentUpdated", dto);
+            await _hubContext.Clients.Group($"RequestOffers_{offer.ServiceRequestId}")
+                                     .SendAsync("OfferPaymentUpdated", dto);
 
-            return ResponseHandler.GetSuccessResponse(null, $"Service offer status updated to {status} successfully.");
+            return ResponseHandler.GetSuccessResponse(dto, "Payment status updated successfully.");
         }
+
+        public async Task<APIResponse> UpdatePaymentReasonAsync(Guid offerId, string paymentReason)
+        {
+            var offer = await _dbContext.ServiceOffers.GetByIdAsync(offerId);
+            if (offer == null)
+                return ResponseHandler.GetNotFoundResponse("Service offer not found.");
+
+            if (offer.Status != "Completed")
+                return ResponseHandler.GetBadRequestResponse("Can only add a reason once work is completed.");
+
+            offer.PaymentReason = paymentReason;
+            _dbContext.ServiceOffers.UpdateAsync(offer);
+            await _dbContext.SaveChangesAsync();
+
+            // build DTO and notify
+            var providerDetails = await _dbContext.UserDetails.GetByIdAsync(offer.ServiceProviderId);
+            var dto = new ServiceOfferResponseDto
+            {
+                Id = offer.Id,
+                ServiceRequestId = offer.ServiceRequestId,
+                ServiceProviderId = offer.ServiceProviderId,
+                ProviderName = $"{providerDetails?.FirstName} {providerDetails?.LastName}",
+                OfferedPrice = offer.OfferedPrice,
+                SentAt = offer.SentAt,
+                ExpiresAt = offer.ExpiresAt,
+                Status = offer.Status,
+                PaymentStatus = offer.PaymentStatus,
+                PaymentReason = offer.PaymentReason
+            };
+
+            await _hubContext.Clients.Group($"ProviderOffers_{offer.ServiceProviderId}")
+                 .SendAsync("YourOfferPaymentUpdated", dto);
+            await _hubContext.Clients.Group($"RequestOffers_{offer.ServiceRequestId}")
+                 .SendAsync("OfferPaymentUpdated", dto);
+
+            return ResponseHandler.GetSuccessResponse(dto, "Reason recorded.");
+        }
+
+
+
+
 
 
 

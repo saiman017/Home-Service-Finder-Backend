@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\serviceRequestImages\" />
-    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\uploads\ServiceCategories\" />
   </ItemGroup>
 
 </Project>

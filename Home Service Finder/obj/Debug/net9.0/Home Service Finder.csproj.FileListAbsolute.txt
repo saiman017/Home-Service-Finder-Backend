@@ -1,5 +1,6 @@
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\appsettings.json
+C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\Home Service Finder.staticwebassets.runtime.json
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\Home Service Finder.staticwebassets.endpoints.json
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\Home Service Finder.exe
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\Home Service Finder.deps.json
@@ -71,6 +72,7 @@ C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Formats.Asn1.dll
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Memory.Data.dll
+C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Runtime.Caching.dll
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Security.Permissions.dll
@@ -177,5 +179,3 @@ C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\Home Service Finder.pdb
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\Home Service Finder.genruntimeconfig.cache
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\ref\Home Service Finder.dll
-C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
-C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\Home Service Finder.staticwebassets.runtime.json

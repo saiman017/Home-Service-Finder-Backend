@@ -1,4 +1,5 @@
-﻿using Home_Service_Finder.RequestServices.ServiceOffers.Contracts;
+﻿using System.Reflection.Metadata.Ecma335;
+using Home_Service_Finder.RequestServices.ServiceOffers.Contracts;
 using Home_Service_Finder.RequestServices.ServiceOffers.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,8 +50,10 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
         [HttpPut("{offerId}/status")]
         public async Task<APIResponse> UpdateOfferStatus(Guid offerId, [FromBody] StatusUpdateDto statusUpdate)
         {
-            return await _serviceOfferService.UpdateOfferStatusAsync(offerId, statusUpdate.Status);
+            // Assuming StatusUpdateDto contains Status, RequestId, CustomerId
+            return await _serviceOfferService.UpdateOfferStatusAsync(offerId, statusUpdate.Status, statusUpdate.RequestId, statusUpdate.CustomerId);
         }
+
 
 
         [HttpGet("offer/{offerId}")]
@@ -58,5 +61,26 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
         {
             return await _serviceOfferService.GetOfferByIdAsync(offerId);
         }
+
+        [HttpPut("{offerId}/payment")]
+        public async Task<APIResponse> UpdatePaymentStatus(
+           Guid offerId,
+           [FromBody] PaymentUpdateDto dto)
+        {
+            var apiResponse = await _serviceOfferService.UpdatePaymentStatusAsync(offerId, dto.PaymentStatus);
+
+            return apiResponse;
+
+        }
+
+        [HttpPut("{offerId}/reason")]
+        public async Task<APIResponse> UpdatePaymentReason(Guid offerId, [FromBody] PaymentReasonDto dto)
+        {
+            var apiResponse = await _serviceOfferService.UpdatePaymentReasonAsync(offerId, dto.PaymentReason);
+            return apiResponse;
+            
+        }
     }
+
+
 }
