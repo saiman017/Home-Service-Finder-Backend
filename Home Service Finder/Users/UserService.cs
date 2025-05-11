@@ -63,7 +63,7 @@ namespace Home_Service_Finder.Users
                 Email = userRequestDto.Email,
                 //Username = userRequestDto.Username,
                 PhoneNumber = userRequestDto.PhoneNumber,
-                Password = userRequestDto.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(userRequestDto.Password),
                 RoleId = userRequestDto.RoleId, // Directly assign RoleId
                 CreatedAt = DateTime.UtcNow,
                 IsEmailVerified = false

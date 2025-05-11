@@ -179,3 +179,4 @@ C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\Home Service Finder.pdb
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\Home Service Finder.genruntimeconfig.cache
 C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\obj\Debug\net9.0\ref\Home Service Finder.dll
+C:\Users\Saiman\source\repos\GenTech Internship\Home Service Finder\Home Service Finder\bin\Debug\net9.0\BCrypt.Net-Next.dll

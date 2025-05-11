@@ -504,7 +504,7 @@ namespace Home_Service_Finder.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(20)")
+                        .HasColumnType("VARCHAR(100)")
                         .HasColumnName("Password");
 
                     b.Property<string>("PhoneNumber")

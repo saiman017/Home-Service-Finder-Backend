@@ -11,5 +11,6 @@ namespace Home_Service_Finder.ServiceCategories.Contracts
     {
 
         Task<ServiceCategory> GetByServiceCategoryName(string name);
+        Task<ServiceCategory> FindByNameIncludingDeletedAsync(string name);
     }
 }
