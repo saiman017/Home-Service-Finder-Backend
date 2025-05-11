@@ -94,21 +94,17 @@ namespace Home_Service_Finder.ServiceCategories
             if (entity == null || entity.IsDeleted)
                 return ResponseHandler.GetNotFoundResponse("Service category not found");
 
-            // Name-change duplicate check
             if (!string.Equals(entity.Name, dto.Name, StringComparison.OrdinalIgnoreCase)
                 && await _db.ServiceCategories.GetByServiceCategoryName(dto.Name) != null)
             {
                 return ResponseHandler.GetBadRequestResponse("Service category name already exists");
             }
 
-            // Update fields
             entity.Name = dto.Name;
             entity.Description = dto.Description;
 
-            // Replace image if new file provided
             if (dto.CategoryImageFile != null && dto.CategoryImageFile.Length > 0)
             {
-                // Delete old
                 if (!string.IsNullOrWhiteSpace(entity.CategoryImage))
                 {
                     var oldPhysical = Path.Combine(
@@ -117,7 +113,7 @@ namespace Home_Service_Finder.ServiceCategories
                         entity.CategoryImage.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
                     if (File.Exists(oldPhysical)) File.Delete(oldPhysical);
                 }
-                // Save new
+ 
                 entity.CategoryImage = await SaveImageFileAsync(dto.CategoryImageFile);
             }
 

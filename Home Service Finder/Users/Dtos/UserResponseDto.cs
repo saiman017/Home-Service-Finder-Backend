@@ -12,11 +12,9 @@
         public string Gender { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public string Role { get; set; }
-        //public string Password { get; set; }
         public string? ProfilePicture { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
-        //public bool IsDeleted { get; set; }
         public bool IsEmailVerified { get; set; }
 
 

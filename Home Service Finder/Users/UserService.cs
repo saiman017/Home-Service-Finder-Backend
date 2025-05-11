@@ -5,7 +5,6 @@ using Home_Service_Finder.Users.Contracts;
 using Home_Service_Finder.Users.DTO;
 using Home_Service_Finder.Users.Dtos;
 using Home_Service_Finder.Users.UserDetails;
-//using Home_Service_Finder.Users.UserRoles;
 using Home_Service_Finder.Users.Users;
 
 namespace Home_Service_Finder.Users
@@ -23,14 +22,13 @@ namespace Home_Service_Finder.Users
         }
         public async Task<APIResponse> AddUser(UserRequestDto userRequestDto)
         {
-            // Check if email already exists
+           
             var existingUserByEmail = await _db.Users.GetByEmailAsync(userRequestDto.Email);
             if (existingUserByEmail != null)
             {
                 return ResponseHandler.GetBadRequestResponse("Email already exists");
             }
 
-            // Check if phone number already exists
             var existingUserByPhone = await _db.Users.GetByPhoneNumber(userRequestDto.PhoneNumber);
             if (existingUserByPhone != null)
             {
@@ -44,35 +42,29 @@ namespace Home_Service_Finder.Users
             //    return ResponseHandler.GetBadRequestResponse("Username already exists");
             //}
 
-            // Verify password match
             if (userRequestDto.Password != userRequestDto.ConfirmPassword)
             {
                 return ResponseHandler.GetBadRequestResponse("Passwords do not match");
             }
 
-            // Verify role exists
             var role = await _db.Roles.GetByIdAsync(userRequestDto.RoleId);
             if (role == null)
             {
                 return ResponseHandler.GetBadRequestResponse("Specified role does not exist");
             }
 
-            // Create new user
             User user = new User()
             {
                 Email = userRequestDto.Email,
-                //Username = userRequestDto.Username,
                 PhoneNumber = userRequestDto.PhoneNumber,
                 Password = BCrypt.Net.BCrypt.HashPassword(userRequestDto.Password),
-                RoleId = userRequestDto.RoleId, // Directly assign RoleId
+                RoleId = userRequestDto.RoleId,
                 CreatedAt = DateTime.UtcNow,
                 IsEmailVerified = false
 
             };
 
             user = await _db.Users.AddAsync(user);
-
-            // Create user details
             UserDetail userDetail = new UserDetail()
             {
                 Id = user.Id,
@@ -86,13 +78,11 @@ namespace Home_Service_Finder.Users
 
             userDetail = await _db.UserDetails.AddAsync(userDetail);
 
-            // Save changes
             string result = await _db.SaveChangesAsync();
 
             // Gererate Otp
             await _emailOTPService.GenerateOTP(user.Id);
 
-            // Prepare response
             UserResponseDto response = new UserResponseDto()
             {
                 Id = user.Id,
@@ -122,7 +112,7 @@ namespace Home_Service_Finder.Users
             {
                 return ResponseHandler.GetNotFoundResponse("User of not found");
             }
-            user.IsDeleted = true; //soft delete
+            user.IsDeleted = true; 
 
             user = _db.Users.UpdateAsync(user);
 
@@ -135,8 +125,6 @@ namespace Home_Service_Finder.Users
 
         public async Task<APIResponse> GetAllUsers()
         {
-            //var roleGuid = new Guid("d4d45e43-7201-4a64-adce-83f24226413a");
-            // Get all non-deleted users and include their roles
             var users = (await _db.Users.GetAllAsync())
                 .Where(u => !u.IsDeleted )
                 .ToList();
@@ -145,14 +133,11 @@ namespace Home_Service_Finder.Users
 
             foreach (var user in users)
             {
-                // Get user details
                 var userDetail = await _db.UserDetails.GetByIdAsync(user.Id);
 
-                // Get role name
                 var role = await _db.Roles.GetByIdAsync(user.RoleId);
                 var roleName = role?.Name ?? "Unknown";
 
-                // Create response DTO
                 var userResponse = new UserResponseDto
                 {
                     Id = user.Id,
@@ -166,7 +151,6 @@ namespace Home_Service_Finder.Users
                     IsEmailVerified = user.IsEmailVerified
                 };
 
-                // Add user details if available
                 if (userDetail != null)
                 {
                     userResponse.FirstName = userDetail.FirstName;
@@ -186,23 +170,19 @@ namespace Home_Service_Finder.Users
 
         public async Task<APIResponse> GetUserById(Guid id)
         {
-            // Get user by ID including their role
+           
             var user = await _db.Users.GetByIdAsync(id);
 
-            // Return not found if user doesn't exist or is deleted
             if (user == null || user.IsDeleted)
             {
                 return ResponseHandler.GetNotFoundResponse("User not found");
             }
 
-            // Get user details
             var userDetail = await _db.UserDetails.GetByIdAsync(user.Id);
 
-            // Get user's role
             var role = await _db.Roles.GetByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "Unknown";
 
-            // Create response DTO
             var response = new UserResponseDto
             {
                 Id = user.Id,
@@ -216,7 +196,6 @@ namespace Home_Service_Finder.Users
                 IsEmailVerified = user.IsEmailVerified
             };
 
-            // Add user details if available
             if (userDetail != null)
             {
                 response.FirstName = userDetail.FirstName;
@@ -232,14 +211,13 @@ namespace Home_Service_Finder.Users
 
         public async Task<APIResponse> UpdateUser(Guid id, UserUpdateRequestDto userUpdateRequestDto)
         {
-            // Get existing user
+
             var user = await _db.Users.GetByIdAsync(id);
             if (user == null || user.IsDeleted)
             {
                 return ResponseHandler.GetNotFoundResponse("User not found");
             }
 
-            // Validate email uniqueness if changed
             if (user.Email != userUpdateRequestDto.Email)
             {
                 var emailExists = await _db.Users.GetByEmailAsync(userUpdateRequestDto.Email);
@@ -269,19 +247,15 @@ namespace Home_Service_Finder.Users
                 }
             }
 
-            // Update user fields (excluding RoleId - role cannot be updated here)
             user.Email = userUpdateRequestDto.Email;
             //user.Username = userUpdateRequestDto.Username;
             user.PhoneNumber = userUpdateRequestDto.PhoneNumber;
             user.ModifiedAt = DateTime.UtcNow;
 
-            // Update user in database
             user =  _db.Users.UpdateAsync(user);
 
-            // Get or create user details
             var userDetail = await _db.UserDetails.GetByIdAsync(id) ?? new UserDetail { Id = id };
 
-            // Update user details
             userDetail.FirstName = userUpdateRequestDto.FirstName;
             //userDetail.MiddleName = userUpdateRequestDto.MiddleName;
             userDetail.LastName = userUpdateRequestDto.LastName;
@@ -289,17 +263,13 @@ namespace Home_Service_Finder.Users
             userDetail.DateOfBirth = userUpdateRequestDto.DateOfBirth;
             userDetail.ProfilePicture = userUpdateRequestDto.ProfilePicture;
 
-            // Save user details
             userDetail =  _db.UserDetails.UpdateAsync(userDetail);
 
-            // Save changes
             string result = await _db.SaveChangesAsync();
 
-            // Get role for response
             var role = await _db.Roles.GetByIdAsync(user.RoleId);
             var roleName = role?.Name ?? string.Empty;
 
-            // Prepare response
             var response = new UserResponseDto
             {
                 Id = user.Id,
@@ -330,7 +300,6 @@ namespace Home_Service_Finder.Users
             if (userDetail == null)
                 return ResponseHandler.GetNotFoundResponse("User not found");
 
-            // Save the image to wwwroot/uploads
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
@@ -343,7 +312,6 @@ namespace Home_Service_Finder.Users
                 await file.CopyToAsync(stream);
             }
 
-            // Replace old image if exists
             if (!string.IsNullOrEmpty(userDetail.ProfilePicture))
             {
                 var oldImagePath = Path.Combine(uploadsFolder, Path.GetFileName(userDetail.ProfilePicture));
@@ -351,7 +319,6 @@ namespace Home_Service_Finder.Users
                     System.IO.File.Delete(oldImagePath);
             }
 
-            // Update profile picture path
             userDetail.ProfilePicture = $"/uploads/{fileName}";
             _db.UserDetails.UpdateAsync(userDetail);
             await _db.SaveChangesAsync();

@@ -1,105 +1,4 @@
-﻿//using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
-//using Home_Service_Finder.RequestServices.ServiceRequest.Dtos;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using System;
-//using System.Threading.Tasks;
-
-//namespace Home_Service_Finder.RequestServices.ServiceRequest
-//{
-//    [Route("api/serviceRequest")]
-//    [ApiController]
-//    public class ServiceRequestController : ControllerBase
-//    {
-//        private readonly IServiceRequestService _serviceRequestService;
-
-//        public ServiceRequestController(IServiceRequestService serviceRequestService)
-//        {
-//            _serviceRequestService = serviceRequestService;
-//        }
-
-//        [HttpPost]
-//        public async Task<APIResponse> CreateServiceRequest([FromBody] ServiceRequestRequestDto serviceRequestRequestDto)
-//        {
-//            var apiResponse = await _serviceRequestService.CreateServiceRequestAsync(serviceRequestRequestDto);
-//            return apiResponse;
-//        }
-
-//        [HttpGet]
-//        public async Task<APIResponse> GetAllServiceRequests()
-//        {
-//            var apiResponse = await _serviceRequestService.GetAllServiceRequestAsync();
-//            return apiResponse;
-//        }
-
-//        [HttpGet("{id}")]
-//        public async Task<APIResponse> GetServiceRequestById(Guid id)
-//        {
-//            var apiResponse = await _serviceRequestService.GetServiceRequestByIdAsync(id);
-//            return apiResponse;
-//        }
-
-//        [HttpGet("customer/{customerId}")]
-//        public async Task<APIResponse> GetRequestsByCustomerId(Guid customerId)
-//        {
-//            var apiResponse = await _serviceRequestService.GetRequestByCustomerId(customerId);
-//            return apiResponse;
-//        }
-
-//        [HttpGet("customer/{customerId}/active")]
-//        public async Task<APIResponse> GetActiveRequestsByCustomerId(Guid customerId)
-//        {
-//            var apiResponse = await _serviceRequestService.GetActiveRequestByCustomerId(customerId);
-//            return apiResponse;
-//        }
-
-
-//        [HttpGet("customer/{customerId}/pending")]
-//        public async Task<APIResponse> GetPendingRequestByCustomerId(Guid customerId)
-//        {
-//            var apiResponse = await _serviceRequestService.GetPendingRequestByCustomerId(customerId);
-//            return apiResponse;
-//        }
-
-//        [HttpGet("{categoryId}/pending")]
-//        public async Task<APIResponse> GetPendingRequestsByCategory(Guid categoryId)
-//        {
-//            var apiResponse = await _serviceRequestService.GetPendingRequestByCategory(categoryId);
-//            return apiResponse;
-//        }
-
-//        [HttpGet("category/{categoryId}")]
-//        public async Task<APIResponse> GetRequestsByServiceCategory(Guid categoryId)
-//        {
-//            var apiResponse = await _serviceRequestService.GetRequestByServiceCategory(categoryId);
-//            return apiResponse;
-//        }
-
-//        [HttpPut("{requestId}/status")]
-//        public async Task<APIResponse> UpdateServiceRequestStatus(Guid requestId, [FromBody] string status)
-//        {
-//            var apiResponse = await _serviceRequestService.UpdateServiceRequestStatusAsync(requestId, status);
-//            return apiResponse;
-//        }
-
-//        [HttpPut("{requestId}/cancel")]
-//        public async Task<APIResponse> CancelServiceRequest(Guid requestId, [FromBody] Guid customerId)
-//        {
-//            var apiResponse = await _serviceRequestService.CancelServiceRequestAsync(requestId, customerId);
-//            return apiResponse;
-//        }
-
-//        [HttpDelete("customer/{customerId}")]
-//        public async Task<APIResponse> DeleteRequestsByCustomerId(Guid customerId)
-//        {
-//            var apiResponse = await _serviceRequestService.DeleteRequestByCustomerId(customerId);
-//            return apiResponse;
-//        }
-//    }
-//}
-
-
-using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
+﻿using Home_Service_Finder.RequestServices.ServiceRequest.Contracts;
 using Home_Service_Finder.RequestServices.ServiceRequest.Dtos;
 using Home_Service_Finder.RequestServices.ServiceRequest;
 using Microsoft.AspNetCore.Http;
@@ -130,13 +29,11 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         {
             var apiResponse = await _serviceRequestService.CreateServiceRequestAsync(serviceRequestRequestDto);
 
-            // If request was created successfully, notify subscribers via SignalR
+        
             if (apiResponse.Success && apiResponse.Data != null)
             {
-                // If the response contains the new request ID
                 if (apiResponse.Data is Guid requestId)
                 {
-                    // First get the full request details
                     var requestResponse = await _serviceRequestService.GetServiceRequestByIdAsync(requestId);
                     if (requestResponse.Success && requestResponse != null)
                     {

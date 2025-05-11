@@ -306,6 +306,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\09b5c38c-600b-458e-b501-3cb173b5e0b8_1f8ddb9d-78cc-4a42-940b-b8e74ca06bfa.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\0a4b5a6e-dc69-4833-995f-bef2c9477339_aa4cac5b-cd76-43a1-82db-f94b885b97f5.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/0a4b5a6e-dc69-4833-995f-bef2c9477339_aa4cac5b-cd76-43a1-82db-f94b885b97f5.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>fst5envjk3</Fingerprint>
+      <Integrity>D2BBHHKHtNNrbXx5nfpEJUDJU+PCQmWwBOOHl/UuvBI=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\0a4b5a6e-dc69-4833-995f-bef2c9477339_aa4cac5b-cd76-43a1-82db-f94b885b97f5.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\0aab408a-29b9-4f24-a0ea-265170b6c0fc_c1ae4d75-80c5-4372-8b72-75eb70e20a2d.jpeg'))">
       <SourceType>Package</SourceType>
       <SourceId>Home Service Finder</SourceId>
@@ -4626,6 +4644,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\7e329e3a-268a-4782-8acc-6a347cce3ae5_45b84935-8791-4b77-81fa-3645599676b6.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\7e53f904-2ce1-4855-9215-073f37b8093e_1058df08-c550-4b44-94e6-584ee1c40900.webp'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/7e53f904-2ce1-4855-9215-073f37b8093e_1058df08-c550-4b44-94e6-584ee1c40900.webp</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>g7w392vvtm</Fingerprint>
+      <Integrity>zGaApwxve3dz3wM9qFzph5M8ioFdf0O05EaoWa3hLgM=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\7e53f904-2ce1-4855-9215-073f37b8093e_1058df08-c550-4b44-94e6-584ee1c40900.webp'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\7e65a59d-2aef-4daa-9965-5d97052598ce_ad464a1d-7a42-4d2f-9308-29e953a4d1bc.jpeg'))">
       <SourceType>Package</SourceType>
       <SourceId>Home Service Finder</SourceId>
@@ -5292,6 +5328,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\92ddf5fc-2244-4f6b-8f32-0fcdb0932c5f_7a2c6574-7040-44c7-a169-048be5b308f0.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\933f19df-6596-4090-b0d0-e71fa1432654_7850481c-0092-4271-9c40-e8a89e8df2e3.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/933f19df-6596-4090-b0d0-e71fa1432654_7850481c-0092-4271-9c40-e8a89e8df2e3.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>og07ujdc4c</Fingerprint>
+      <Integrity>6CeNaofZpUT1Jn6zSbrFbCecztwhq/iCyL2ddpOZCgU=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\933f19df-6596-4090-b0d0-e71fa1432654_7850481c-0092-4271-9c40-e8a89e8df2e3.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\9394643f-2fbf-479a-9638-12c5365a17fe_09cef257-7dff-44b1-8caa-c64e0b4d5ce3.jpeg'))">
       <SourceType>Package</SourceType>
       <SourceId>Home Service Finder</SourceId>
@@ -5832,6 +5886,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\a26625a1-7374-4bac-b7c5-8b755483f4f6_4200a697-6bd7-4c5e-89e2-7725d68b1fe7.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\a2b21c55-ce90-4d00-83a6-48136f7ab854_276e07db-8255-4cda-b080-3aae67c2d42f.webp'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/a2b21c55-ce90-4d00-83a6-48136f7ab854_276e07db-8255-4cda-b080-3aae67c2d42f.webp</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>2a0dggok61</Fingerprint>
+      <Integrity>Vu3hvXgLi9ix6adLcO9V5AV3iChS1MgAn7IKfodb1LY=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\a2b21c55-ce90-4d00-83a6-48136f7ab854_276e07db-8255-4cda-b080-3aae67c2d42f.webp'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\a3c42f45-1de3-4347-a43b-2082002aba64_0db10f7e-77a5-4fc2-a938-c222964f4ab3.jpeg'))">
       <SourceType>Package</SourceType>
       <SourceId>Home Service Finder</SourceId>
@@ -6101,6 +6173,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\ad274bee-a242-4f45-8203-f10ffe3fcbeb_8d2c8fd3-2a55-4a02-801d-55a8fe3b4afa.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\ad31a580-a11f-418f-9000-723f0305e958_f3f38fde-29bd-498b-8eff-6ca235a99e0c.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/ad31a580-a11f-418f-9000-723f0305e958_f3f38fde-29bd-498b-8eff-6ca235a99e0c.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>aj8o4bbgmz</Fingerprint>
+      <Integrity>yn7H6X4+yAX7zVURFkkJ2YJHwsPB28wI4EeQl2+xvKc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\ad31a580-a11f-418f-9000-723f0305e958_f3f38fde-29bd-498b-8eff-6ca235a99e0c.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\ad6c631f-71c0-462b-9bd0-3fa43220f82e_591ae44d-9083-4482-8b79-9334b8623182.jpeg'))">
       <SourceType>Package</SourceType>
@@ -8783,6 +8873,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\f96cd831-740b-42d2-8bdb-c5f744961b97_95acc63a-1d4d-4ff1-ba50-d1c9e4e0a2d5.jpeg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\f9a5edac-c5fb-444a-8b94-0d24b05b5b20_4ab2af7b-eb45-4b05-b715-e4a40adbe425.jpeg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Home Service Finder</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Home Service Finder</BasePath>
+      <RelativePath>serviceRequestImages/f9a5edac-c5fb-444a-8b94-0d24b05b5b20_4ab2af7b-eb45-4b05-b715-e4a40adbe425.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>z7a83fefxw</Fingerprint>
+      <Integrity>QfuDKhlvbvvMmvgWq6aX8HyBNJ17pc06/59TZ2gbM4Q=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\f9a5edac-c5fb-444a-8b94-0d24b05b5b20_4ab2af7b-eb45-4b05-b715-e4a40adbe425.jpeg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\serviceRequestImages\f9dbebfc-549b-4c63-af38-64d6c9a2ef2b_e4358583-0642-4ad8-9b6a-f0ed03748173.jpeg'))">
       <SourceType>Package</SourceType>

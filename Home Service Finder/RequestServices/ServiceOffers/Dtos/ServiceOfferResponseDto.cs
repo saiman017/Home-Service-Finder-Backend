@@ -11,7 +11,7 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers.Dtos
         public decimal OfferedPrice { get; set; }
         public DateTime SentAt { get; set; }
         public DateTime ExpiresAt { get; set; }
-        public string Status { get; set; } // "Pending", "Accepted", "Rejected", "Expired"
+        public string Status { get; set; }
         public bool PaymentStatus { get; set; } = false;
         public string? PaymentReason { get; set; }
     }

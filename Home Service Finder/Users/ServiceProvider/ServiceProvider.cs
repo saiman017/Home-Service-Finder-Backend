@@ -19,7 +19,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
         public int Experience { get; set; }
 
         [Column("IsActive", TypeName = "BOOLEAN")]
-        public bool IsActive { get; set; } = false; // after login make it true
+        public bool IsActive { get; set; } = false;
 
         [Column("IsAdminVerified", TypeName = "BOOLEAN")]
         public bool IsAdminVerified { get; set; } = false;

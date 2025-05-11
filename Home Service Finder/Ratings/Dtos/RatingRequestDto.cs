@@ -4,7 +4,7 @@
     {
         public Guid CustomerId { get; set; }
         public Guid ServiceProviderId { get; set; }
-        public int Value { get; set; }               // 1–5
+        public int Value { get; set; }               
         public string? Comments { get; set; }
         public Guid? ServiceRequestId { get; set; }
 

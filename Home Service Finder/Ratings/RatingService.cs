@@ -78,7 +78,6 @@ namespace Home_Service_Finder.Ratings
 
         public async Task<APIResponse> GetRatingStatsAsync(Guid providerId)
         {
-            // pull all ratings for this provider
             var ratings = await _dbContext.Ratings.GetByProviderAsync(providerId);
 
             var count = ratings.Count();

@@ -37,7 +37,6 @@ namespace Home_Service_Finder.Authentication
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                //new Claim(JwtRegisteredClaimNames.,user.IsEmailVerified),
             };
 
             var role =   _dbContext.Roles.GetByIdAsync(user.RoleId).Result;

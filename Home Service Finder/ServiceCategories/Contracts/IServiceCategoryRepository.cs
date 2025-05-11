@@ -2,11 +2,6 @@
 
 namespace Home_Service_Finder.ServiceCategories.Contracts
 {
-    //public interface IServiceCategoryRepository : IGenericRepository<ServiceCategory>
-    //{
-
-    //}
-
     public interface IServiceCategoryRepository : IGenericRepository<ServiceCategory>
     {
 

@@ -13,8 +13,5 @@ namespace Home_Service_Finder.Users.ServiceProvider.Contracts
         Task<APIResponse> GetRevenueTimeSeriesAsync(Guid providerId, string groupBy = "month");
 
 
-
-        // findbyServiceId listof service service provider
-
     }
 }

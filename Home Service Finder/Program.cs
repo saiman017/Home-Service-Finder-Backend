@@ -1,6 +1,4 @@
-﻿
-
-using System.Net;
+﻿using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using Home_Service_Finder;
@@ -41,14 +39,13 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuration
+
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 
 builder.Configuration.AddConfiguration(configuration);
 
-// Services
 builder.Services.AddControllers();
 
 builder.Services.AddSignalR(options =>
@@ -61,7 +58,6 @@ builder.Services.AddSignalR(options =>
 });
 
 
-// Dependency Injection
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -91,7 +87,6 @@ builder.Services.AddScoped<IServiceOfferRepository, ServiceOfferRepository>();
 builder.Services.AddScoped<IServiceOfferService, ServiceOfferService>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddScoped<IRatingService, RatingService>();
-//builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 
@@ -121,19 +116,16 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true,
         };
 
-        // Add support for WebSockets with SignalR
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
             {
                 var accessToken = context.Request.Query["access_token"];
 
-                // If the request is for any SignalR hub
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken) &&
                     (path.StartsWithSegments("/requestHub") || path.StartsWithSegments("/serviceOfferHub")))
                 {
-                    // Read the token from the query string
                     context.Token = accessToken;
                 }
                 return Task.CompletedTask;
@@ -183,7 +175,6 @@ builder.Services.AddSwaggerGen(c =>
 // CORS Configuration
 var app = builder.Build();
 
-// Middleware Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -194,7 +185,7 @@ else
     app.UseHttpsRedirection();
 }
 
-app.UseStaticFiles(); // Serve static files (uploads)
+app.UseStaticFiles(); 
 
 app.UseRouting();
 app.UseCors(builder => builder
@@ -208,18 +199,10 @@ app.UseAuthorization();
 
 
 
-// Map controllers and SignalR hubs
 app.MapControllers();
 app.MapHub<ServiceRequestHub>("/requestHub");
-app.MapHub<ServiceOfferHub>("/serviceOfferHub"); // Add the new ServiceOfferHub mapping
+app.MapHub<ServiceOfferHub>("/serviceOfferHub");
 
-// Database Initialization (if needed)
-/* Uncomment if you need database initialization
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<YourDbContext>();
-    dbContext.Database.Migrate();
-}
-*/
+
 
 app.Run();

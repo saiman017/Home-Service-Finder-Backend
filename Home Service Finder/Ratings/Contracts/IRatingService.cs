@@ -6,6 +6,6 @@ namespace Home_Service_Finder.Ratings.Contracts
     {
         Task<APIResponse> AddRatingAsync( RatingRequestDto dto);
         Task<APIResponse> GetRatingsForProviderAsync(Guid providerId);
-        Task<APIResponse> GetRatingStatsAsync(Guid providerId);   //
+        Task<APIResponse> GetRatingStatsAsync(Guid providerId);  
     }
 }
