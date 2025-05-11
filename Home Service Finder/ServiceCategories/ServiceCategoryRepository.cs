@@ -20,5 +20,11 @@ namespace Home_Service_Finder.ServiceCategories
             var entity = await _dbSet.FirstOrDefaultAsync(x => x.Name == name );
             return entity;
         }
+        public async Task<ServiceCategory> FindByNameIncludingDeletedAsync(string name)
+        {
+            return await _dbSet.FirstOrDefaultAsync(x => x.Name == name);
+
+        }
+    
     }
 }

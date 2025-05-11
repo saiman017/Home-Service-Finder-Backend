@@ -27,7 +27,7 @@ namespace Home_Service_Finder.Users.Users
         [Required]
         public string PhoneNumber { get; set; }
        
-        [Column("Password", TypeName = "VARCHAR(20)")]
+        [Column("Password", TypeName = "VARCHAR(100)")]
         [Required]
         public string Password { get; set; }
 

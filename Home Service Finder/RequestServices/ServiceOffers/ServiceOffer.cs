@@ -33,7 +33,7 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
         [Column("PaymentStatus", TypeName = "BOOLEAN")]
         public bool PaymentStatus { get; set; } = false;
 
-        [Column("PaymentReason", TypeName = "TEXT")]     // or VARCHAR(max) if you prefer
+        [Column("PaymentReason", TypeName = "TEXT")] 
         public string? PaymentReason { get; set; } = null;
     }
 

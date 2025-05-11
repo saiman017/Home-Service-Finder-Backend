@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "6g/xio2I0gc=",
+  "dgSpecHash": "7QfJ67wRM6I=",
   "success": true,
   "projectFilePath": "C:\\Users\\Saiman\\source\\repos\\GenTech Internship\\Home Service Finder\\Home Service Finder\\Home Service Finder.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Saiman\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\Saiman\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Saiman\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\Saiman\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Saiman\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\Saiman\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Saiman\\.nuget\\packages\\mailkit\\4.11.0\\mailkit.4.11.0.nupkg.sha512",

@@ -27,7 +27,7 @@ namespace Home_Service_Finder.Locations
 
         [Column("Longitude", TypeName = "double precision")]
         public double Longitude { get; set; }
-        [Column("CreatedAt", TypeName = "timestamptz")] // Or just don't specify TypeName
+        [Column("CreatedAt", TypeName = "timestamptz")] 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("UpdatedAt", TypeName = "timestamptz")]

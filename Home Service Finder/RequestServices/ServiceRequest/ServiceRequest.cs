@@ -36,7 +36,7 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         public DateTime ExpiresAt { get; set; }
 
         [Column("Status", TypeName = "VARCHAR(20)")]
-        public string Status { get; set; } = "Pending"; // Pending, Accepted, Rejected, Expired
+        public string Status { get; set; } = "Pending"; 
 
         [Column("CancelReason", TypeName = "TEXT")]
         public string? CancelReason { get; set; }
@@ -44,7 +44,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         public ICollection<ServiceRequestServiceList> ServiceRequestServiceLists { get; set; }
         public ICollection<ServiceOffer> Serviceoffers { get; set; }
 
-        // Snapshot of location details at request time
         [Column("LocationAddress", TypeName = "TEXT")]
         public string LocationAddress { get; set; }
 

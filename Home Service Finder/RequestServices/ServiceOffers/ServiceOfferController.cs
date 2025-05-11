@@ -50,7 +50,6 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
         [HttpPut("{offerId}/status")]
         public async Task<APIResponse> UpdateOfferStatus(Guid offerId, [FromBody] StatusUpdateDto statusUpdate)
         {
-            // Assuming StatusUpdateDto contains Status, RequestId, CustomerId
             return await _serviceOfferService.UpdateOfferStatusAsync(offerId, statusUpdate.Status, statusUpdate.RequestId, statusUpdate.CustomerId);
         }
 

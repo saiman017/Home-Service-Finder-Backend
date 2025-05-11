@@ -48,7 +48,6 @@ public class LocationService : ILocationService
             if (locationRequestDto.UserId == Guid.Empty || locationRequestDto == null)
                 return ResponseHandler.GetBadRequestResponse("Invalid user ID or data");
 
-            // Ensure the user exists
             var user = await _dbContext.Users.GetByIdAsync(locationRequestDto.UserId);
             if (user == null)
                 return ResponseHandler.GetNotFoundResponse("User not found");
@@ -77,7 +76,6 @@ public class LocationService : ILocationService
             await _dbContext.Locations.AddAsync(location);
             string result = await _dbContext.SaveChangesAsync();
 
-            // Log the result for debugging
             Console.WriteLine($"SaveChangesAsync result: {result}");
 
             var response = new LocationResponseDTO
@@ -97,7 +95,6 @@ public class LocationService : ILocationService
         }
         catch (Exception ex)
         {
-            // Log the exception for debugging
             Console.WriteLine($"Exception in SaveLocationAsync: {ex}");
             return ResponseHandler.GetBadRequestResponse($"Exception: {ex.Message}");
         }
@@ -133,7 +130,6 @@ public class LocationService : ILocationService
         }
         else
         {
-            // Update existing location
             location.Address = dto.Address;
             location.City = dto.City ?? location.City;
             location.PostalCode = dto.PostalCode ?? location.PostalCode;

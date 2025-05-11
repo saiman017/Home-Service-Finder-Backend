@@ -273,27 +273,7 @@ namespace Home_Service_Finder.Users.ServiceProvider
                 }
             }
 
-            //// Validate username uniqueness if changed
-            //if (user.Username != serviceProviderUpdateRequestDto.Username)
-            //{
-            //    var usernameExists = await _db.Users.GetByUserNameAsync(serviceProviderUpdateRequestDto.Username);
-            //    if (usernameExists != null)
-            //    {
-            //        return ResponseHandler.GetBadRequestResponse("Username already in use");
-            //    }
-            //}
-
-            // Validate service category exists if changed
-            //if (serviceProvider.ServiceCategoryId != serviceProviderUpdateRequestDto.ServiceCategoryId)
-            //{
-            //    var categoryExists = await _db.ServiceCategories.GetByIdAsync(requestDto.ServiceCategoryId);
-            //    if (categoryExists == null)
-            //    {
-            //        return ResponseHandler.GetBadRequestResponse("Service category does not exist");
-            //    }
-            //}
-
-            // Update user
+           
             user.Email = serviceProviderUpdateRequestDto.Email;
             //user.Username = serviceProviderUpdateRequestDto.Username;
             user.PhoneNumber = serviceProviderUpdateRequestDto.PhoneNumber;
@@ -413,13 +393,11 @@ namespace Home_Service_Finder.Users.ServiceProvider
 
         public async Task<APIResponse> GetRevenueTimeSeriesAsync(Guid providerId, string groupBy = "month")
         {
-            // 1) Fetch only paid, completed offers for this provider
             var offers = await _db.ServiceOffers.GetAllAsync();
             var paid = offers
                 .Where(o => o.ServiceProviderId == providerId && o.PaymentStatus && o.Status == "Completed")
                 .ToList();
 
-            // 2) Group by the requested period
             IEnumerable<ServiceProviderRevenueDto> series = groupBy.ToLower() switch
             {
                 "day" => paid
@@ -449,7 +427,6 @@ namespace Home_Service_Finder.Users.ServiceProvider
                     ))
             };
 
-            // 3) Order and return
             var ordered = series.OrderBy(s => s.Period).ToList();
             return ResponseHandler.GetSuccessResponse(ordered);
         }

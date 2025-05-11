@@ -15,6 +15,7 @@ namespace Home_Service_Finder.Authentication
         private readonly AppDbContext _dbContext;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IEmailOTPService _emailOTPService;
+        bool isPasswordValid;
 
         public AuthService(IUnitOfWork db,AppDbContext dbContext, IJwtTokenGenerator jwtTokenGenerator, IEmailOTPService emailOTPService)
         {
@@ -32,13 +33,27 @@ namespace Home_Service_Finder.Authentication
                 return ResponseHandler.GetBadRequestResponse("User not found");
             }
 
-            string password = user.Password;
-            if(password != requestDto.Password)
+            try
+            {
+                isPasswordValid = BCrypt.Net.BCrypt.Verify(requestDto.Password, user.Password);
+            }
+            catch (BCrypt.Net.SaltParseException)
+            {   
+                isPasswordValid = (requestDto.Password == user.Password);
+                if (isPasswordValid)
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                    _db.Users.UpdateAsync(user);
+                    await _db.SaveChangesAsync();
+                }
+            }
+
+            if (!isPasswordValid)
             {
                 return ResponseHandler.GetBadRequestResponse("Invalid password");
             }
 
-            // Check if email is verified
+
             if (!user.IsEmailVerified)
             {
               return  await _emailOTPService.GenerateOTP(user.Id);         
@@ -88,7 +103,6 @@ namespace Home_Service_Finder.Authentication
 
         public async Task<APIResponse> LoginWithRefreshToken(string refreshToken)
         {
-            // Get the refresh token from database
             RefreshToken? storedRefreshToken = await _dbContext.RefreshTokens
                .Include(r => r.User)
                .FirstOrDefaultAsync(r => r.Token == refreshToken);
@@ -102,19 +116,15 @@ namespace Home_Service_Finder.Authentication
             {
                 return ResponseHandler.GetUnauthorizedResponse("Refresh token expired");
             }
-
-            // Get the user associated with the refresh token
             var user = storedRefreshToken.User;
             if (user == null)
             {
                 return ResponseHandler.GetUnauthorizedResponse("User not found");
             }
 
-            // Generate new tokens
             var newAccessToken = _jwtTokenGenerator.GenerateAccessToken(user);
             var newRefreshToken = _jwtTokenGenerator.GenerateRefreshToken();
 
-            // Revoke the old refresh token
             _dbContext.RefreshTokens.Remove(storedRefreshToken);
 
             // Add the new refresh token

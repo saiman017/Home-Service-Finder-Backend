@@ -123,10 +123,8 @@ namespace Home_Service_Finder.ServicesList
                 return ResponseHandler.GetNotFoundResponse($"Service List of Id {id} not found");
             }
 
-            // Check if the name is being changed
             if (serviceListRequestDto.Name.ToLower() != serviceList.Name.ToLower())
             {
-                // Verify the new name doesn't already exist
                 var checkServiceList = await _dbContext.ServiceLists.FindByNameAsync(serviceListRequestDto.Name);
                 if (checkServiceList != null)
                 {
@@ -134,7 +132,6 @@ namespace Home_Service_Finder.ServicesList
                 }
             }
 
-            // Update the service list
             serviceList.Name = serviceListRequestDto.Name;
             serviceList.ServiceCategoryId = serviceListRequestDto.ServiceCategoryId;
             serviceList.ModifiedAt = DateTime.UtcNow;

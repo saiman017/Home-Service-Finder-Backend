@@ -10,7 +10,7 @@ namespace Home_Service_Finder.RequestServices.ServiceOffers
     {
         private readonly IServiceProvider _services;
         private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(1);
-        private readonly TimeSpan _offerExpiration = TimeSpan.FromMinutes(5); // Shorter expiration for offers
+        private readonly TimeSpan _offerExpiration = TimeSpan.FromMinutes(5);
 
         public ServiceOfferExpirationService(IServiceProvider services)
         {

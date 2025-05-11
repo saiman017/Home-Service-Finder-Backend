@@ -13,9 +13,7 @@ namespace Home_Service_Finder.Ratings
         private readonly IRatingService _svc;
         public RatingController(IRatingService svc) => _svc = svc;
 
-        // Customer must be authenticated as "Customer"
         [HttpPost]
-       
         public async Task<APIResponse> Add([FromBody] RatingRequestDto dto)
         {
            
@@ -23,7 +21,6 @@ namespace Home_Service_Finder.Ratings
             return await _svc.AddRatingAsync( dto);
         }
 
-        // public endpoint to view all ratings for a provider
         [HttpGet("provider/{providerId:guid}")]
         public async Task<APIResponse> GetByProvider(Guid providerId)
             => await _svc.GetRatingsForProviderAsync(providerId);

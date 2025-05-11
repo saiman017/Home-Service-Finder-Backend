@@ -18,10 +18,8 @@
 
         public string Status { get; set; }
         public string? CancelReason { get; set; }
-
         public List<Guid> ServiceListIds { get; set; }
         public List<string> ServiceListNames { get; set; }
-
         public string LocationAddress { get; set; }
         public string LocationCity { get; set; }
         public string LocationPostalCode { get; set; }

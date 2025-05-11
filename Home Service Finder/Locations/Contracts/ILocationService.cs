@@ -8,7 +8,6 @@ namespace Home_Service_Finder.Locations.Contracts
         Task<APIResponse> GetLocationAsync(Guid id);
         Task<APIResponse> SaveLocationAsync( LocationRequestDto locationRequestDto);
         Task<APIResponse> UpdateLocationAsync(Guid userId, LocationRequestDto locationRequestDto);
-        //Task<APIResponse> SaveOrUpdateLocationAsync(Guid userId, LocationRequestDto locationRequestDto)
 
     }
 }

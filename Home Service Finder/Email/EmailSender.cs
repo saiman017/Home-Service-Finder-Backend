@@ -28,11 +28,11 @@ namespace Home_Service_Finder.Email
             {
                 Port = int.Parse(mailSettings["Port"]),
                 Credentials = new NetworkCredential(
-                    mailSettings["Username"],  // Use Mailtrap username, NOT SenderEmail
+                    mailSettings["Username"],  
                     mailSettings["Password"]),
                 EnableSsl = bool.Parse(mailSettings["UseSSL"]),
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false  // Explicitly disable default credentials
+                UseDefaultCredentials = false 
             };
 
             await client.SendMailAsync(message);
@@ -52,7 +52,6 @@ namespace Home_Service_Finder.Email
             string appUrl = "https://homeservicefinder.com";
             string supportEmail = "support@homeservicefinder.com";
 
-            // Create a visually appealing email template
             return $@"
 <!DOCTYPE html>
 <html>

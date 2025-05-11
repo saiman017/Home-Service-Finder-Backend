@@ -21,7 +21,6 @@ using Home_Service_Finder.Users.ServiceProvider;
 using Home_Service_Finder.Users.ServiceProvider.Contracts;
 using Home_Service_Finder.Users.UserDetails;
 using Home_Service_Finder.Users.UserDetails.Contracts;
-//using Home_Service_Finder.Users.UserRoles.Contracts;
 using Home_Service_Finder.Users.Users;
 using Home_Service_Finder.Users.Users.Contracts;
 using Microsoft.EntityFrameworkCore.Storage;

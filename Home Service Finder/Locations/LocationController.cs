@@ -31,7 +31,6 @@ namespace Home_Service_Finder.Locations
             return await _locationService.SaveLocationAsync( locationRequestDto);
         }
 
-        // ✅ Unified PUT method for both create (if not exists) and update
         [HttpPut("{userId}")]
         public async Task<APIResponse> UpsertLocationAsync(Guid userId, [FromBody] LocationRequestDto locationRequestDto)
         {

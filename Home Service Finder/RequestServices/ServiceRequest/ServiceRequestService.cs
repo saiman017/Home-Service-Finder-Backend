@@ -30,12 +30,10 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
         {
             try
             {
-                // Validate customer exists
                 var customer = await _dbContext.Users.GetByIdAsync(serviceRequestRequestDto.CustomerId);
                 if (customer == null)
                     return ResponseHandler.GetBadRequestResponse("Customer not found.");
 
-                // Check for existing active requests
                 var activeRequests = (await _dbContext.ServiceRequests.GetAllAsync())
                     .Where(sr => sr.CustomerId == serviceRequestRequestDto.CustomerId &&
                                (sr.Status == "Pending" || sr.Status == "Accepted"))
@@ -44,17 +42,14 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 if (activeRequests.Any())
                     return ResponseHandler.GetBadRequestResponse("You already have an active service request.");
 
-                // Validate location
                 var location = await _dbContext.Locations.GetByIdAsync(serviceRequestRequestDto.LocationId);
                 if (location == null)
                     return ResponseHandler.GetBadRequestResponse("Location not found.");
 
-                // Validate category
                 var category = await _dbContext.ServiceCategories.GetByIdAsync(serviceRequestRequestDto.ServiceCategoryId);
                 if (category == null)
                     return ResponseHandler.GetBadRequestResponse("Service category not found.");
 
-                // Validate service lists if provided
                 if (serviceRequestRequestDto.ServiceListIds?.Any() == true)
                 {
                     foreach (var serviceListId in serviceRequestRequestDto.ServiceListIds)
@@ -64,7 +59,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                     }
                 }
 
-                // Create new request
                 var serviceRequest = new ServiceRequest
                 {
                     Id = Guid.NewGuid(),
@@ -84,7 +78,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
                 await _dbContext.ServiceRequests.AddAsync(serviceRequest);
 
-                // Add service list mappings
                 if (serviceRequestRequestDto.ServiceListIds?.Any() == true)
                 {
                     foreach (var serviceListId in serviceRequestRequestDto.ServiceListIds)
@@ -100,7 +93,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
 
                 await _dbContext.SaveChangesAsync();
 
-                // Send notification to providers subscribed to this category
                 var responseDto = await MapToResponseDto(serviceRequest);
                 await _hubContext.Clients.Group($"Category_{serviceRequest.ServiceCategoryId}").SendAsync("NewRequestCreated", responseDto);
 
@@ -122,14 +114,12 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
                 if (!allowedStatuses.Contains(status))
                     return ResponseHandler.GetBadRequestResponse($"Invalid status. Allowed values: {string.Join(", ", allowedStatuses)}");
 
-                // If status is already the same, don't update — just return success
                 if (serviceRequest.Status == status)
                 {
                     var dtoAlready = await MapToResponseDto(serviceRequest);
                     return ResponseHandler.GetSuccessResponse(dtoAlready, $"Service request is already {status}.");
                 }
 
-                // Prevent changing from terminal statuses to others
                 var terminalStatuses = new[] { "Cancelled", "Completed", "Expired" };
                 if (terminalStatuses.Contains(serviceRequest.Status) && serviceRequest.Status != status)
                 {
@@ -228,7 +218,6 @@ namespace Home_Service_Finder.RequestServices.ServiceRequest
             await _hubContext.Clients.Group($"Customer_{sr.CustomerId}")
                 .SendAsync("RequestCancelled", responseDto);
 
-            // If the request was assigned to a provider, notify them too
             var offer = (await _dbContext.ServiceOffers.GetAllAsync())
                            .FirstOrDefault(o => o.ServiceRequestId == requestId && o.Status == "Accepted");
             if (offer != null)

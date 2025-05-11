@@ -15,7 +15,6 @@ namespace Home_Service_Finder.AdminDashboard
         private readonly IUnitOfWork _db;
         public AdminDashboardController(IUnitOfWork db) => _db = db;
 
-        // 1) Total Requests + Total Revenue
         [HttpGet("summary")]
         public async Task<SummaryDto> GetSummary()
         {
@@ -26,11 +25,11 @@ namespace Home_Service_Finder.AdminDashboard
             return new SummaryDto(totalRequests, totalRevenue);
         }
 
-        // 2) New Requests over time, grouped by day/week/month
+        
         [HttpGet("requests")]
         public async Task<IEnumerable<TimeSeriesDto>> GetRequests([FromQuery] string groupBy = "day")
         {
-            // First fetch all requests and perform date operations in memory
+
             var requests = await _db.ServiceRequests.Entities.ToListAsync();
 
             switch (groupBy.ToLower())
@@ -38,7 +37,7 @@ namespace Home_Service_Finder.AdminDashboard
                 case "day":
                     {
                         return requests
-                            .GroupBy(r => r.CreatedAt.Date)  // Group by date portion only
+                            .GroupBy(r => r.CreatedAt.Date)  
                             .Select(g => new TimeSeriesDto(
                                 g.Key.ToString("yyyy-MM-dd"),
                                 g.Count()
@@ -52,7 +51,7 @@ namespace Home_Service_Finder.AdminDashboard
                         return requests
                             .GroupBy(r => new {
                                 Year = r.CreatedAt.Year,
-                                Week = (r.CreatedAt.DayOfYear - 1) / 7 + 1  // Approximate week number
+                                Week = (r.CreatedAt.DayOfYear - 1) / 7 + 1
                             })
                             .Select(g => new TimeSeriesDto(
                                 $"{g.Key.Year:0000}-W{g.Key.Week:00}",
@@ -86,7 +85,6 @@ namespace Home_Service_Finder.AdminDashboard
         [HttpGet("revenue")]
         public async Task<IEnumerable<RevenueDto>> GetRevenue([FromQuery] string groupBy = "month")
         {
-            // Fetch all paid offers and perform date operations in memory
             var paidOffers = await _db.ServiceOffers.Entities
                 .Where(o => o.PaymentStatus)
                 .ToListAsync();
@@ -96,7 +94,7 @@ namespace Home_Service_Finder.AdminDashboard
                 case "day":
                     {
                         return paidOffers
-                            .GroupBy(o => o.SentAt.Date)  // Group by date portion only
+                            .GroupBy(o => o.SentAt.Date) 
                             .Select(g => new RevenueDto(
                                 g.Key.ToString("yyyy-MM-dd"),
                                 g.Sum(o => o.OfferedPrice)
@@ -110,7 +108,7 @@ namespace Home_Service_Finder.AdminDashboard
                         return paidOffers
                             .GroupBy(o => new {
                                 Year = o.SentAt.Year,
-                                Week = (o.SentAt.DayOfYear - 1) / 7 + 1  // Approximate week number
+                                Week = (o.SentAt.DayOfYear - 1) / 7 + 1  
                             })
                             .Select(g => new RevenueDto(
                                 $"{g.Key.Year:0000}-W{g.Key.Week:00}",
@@ -144,13 +142,11 @@ namespace Home_Service_Finder.AdminDashboard
    [FromQuery] string groupBy = "month"
 )
         {
-            // 1) Base query: only paid offers for that provider
             var query = _db.ServiceOffers.Entities
                            .Where(o => o.PaymentStatus && o.ServiceProviderId == providerId);
 
             var paidOffers = await query.ToListAsync();
 
-            // 2) Group & project just like your other method
             switch (groupBy.ToLower())
             {
                 case "day":
@@ -231,7 +227,6 @@ namespace Home_Service_Finder.AdminDashboard
         }
     }
 
-    // DTO classes
     public record SummaryDto(int TotalRequests, decimal TotalRevenue);
     public record TimeSeriesDto(string Period, int Count);
     public record RevenueDto(string Period, decimal Amount);
